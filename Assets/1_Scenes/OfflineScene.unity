@@ -1837,6 +1837,7 @@ GameObject:
   - component: {fileID: 1923456138}
   - component: {fileID: 1923456141}
   - component: {fileID: 1923456142}
+  - component: {fileID: 1923456143}
   m_Layer: 0
   m_Name: Multiplayer Canvus
   m_TagString: Untagged
@@ -1893,36 +1894,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4331bff977c4204f8e9f77d348b080f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tweenOnStart: 1
+  loop: 1
   onTweenOutComplete:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1923456138}
-        m_TargetAssemblyTypeName: TweenBrain, Assembly-CSharp
-        m_MethodName: TweenIn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onTweenInComplete:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1923456138}
-        m_TargetAssemblyTypeName: TweenBrain, Assembly-CSharp
-        m_MethodName: TweenOut
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!223 &1923456139
 Canvas:
   m_ObjectHideFlags: 0
@@ -2008,6 +1987,33 @@ MonoBehaviour:
   positionOut: {x: 0, y: 0}
   positionIn: {x: 0, y: 0}
   rotationOut: 90
+  rotationIn: 0
+  completed: 0
+--- !u!114 &1923456143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923456135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3221422801f50e54489ce8303ffc2c1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenType: 1
+  tweenMode: 1
+  tweenTime: 0.5
+  alphaOut: 0
+  alphaIn: 1
+  uniformScale: 1
+  scaleOut: 0
+  scaleOutVector: {x: 0, y: 0}
+  scaleIn: 1
+  scaleInVector: {x: 1, y: 1}
+  positionOut: {x: 0, y: 0}
+  positionIn: {x: 0, y: 0}
+  rotationOut: 0
   rotationIn: 0
   completed: 0
 --- !u!1 &1935259713

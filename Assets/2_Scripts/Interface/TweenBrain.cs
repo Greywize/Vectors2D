@@ -14,8 +14,23 @@ public class TweenBrain : MonoBehaviour
     public TweenEvent tweenOut;
     public TweenEvent tweenIn;
 
+    public bool tweenOnStart = false;
+    public bool loop = false;
+
     public UnityEvent onTweenOutComplete;
     public UnityEvent onTweenInComplete;
+
+    private void Start()
+    {
+        if (tweenOnStart)
+            TweenOut();
+
+        if (loop)
+        {
+            onTweenOutComplete.AddListener(TweenIn);
+            onTweenInComplete.AddListener(TweenOut);
+        }
+    }
 
     public void TweenOut()
     {
