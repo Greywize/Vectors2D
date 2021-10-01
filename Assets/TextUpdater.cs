@@ -15,11 +15,11 @@ public class TextUpdater : MonoBehaviour
 
     private void OnEnable()
     {
-        InterfaceManager.Instance.onLoadingScreenEvent += UpdateText;
+        // InterfaceManager.Instance.onLoadingScreenEvent += UpdateText;
     }
     private void OnDisable()
     {
-        InterfaceManager.Instance.onLoadingScreenEvent -= UpdateText;
+        // InterfaceManager.Instance.onLoadingScreenEvent -= UpdateText;
     }
 
     private void UpdateText(string message)

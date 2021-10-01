@@ -181,7 +181,7 @@ PrefabInstance:
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 754340318}
+      objectReference: {fileID: 1923456138}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -196,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: Host
+      value: TweenIn
       objectReference: {fileID: 0}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -204,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: InterfaceManager, Assembly-CSharp
+      value: TweenBrain, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -539,7 +539,6 @@ GameObject:
   - component: {fileID: 473265039}
   - component: {fileID: 473265038}
   - component: {fileID: 473265037}
-  - component: {fileID: 473265036}
   m_Layer: 0
   m_Name: Game Canvas
   m_TagString: Untagged
@@ -567,21 +566,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &473265036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 473265034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12e461c3398b700499fe9d1011dd78d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 1
-  tweenTime: 0.5
-  fadeInOnStart: 0
 --- !u!114 &473265037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,9 +680,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 754340317}
-  - component: {fileID: 754340318}
   m_Layer: 0
-  m_Name: --- Interface Manager ---
+  m_Name: --- Interfaces ---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -719,24 +702,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &754340318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754340316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd07b1b3d08f5e04898188c74f790d9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  networkManager: {fileID: 1699413722}
-  startingScreen: 0
-  multiplayerCanvas: {fileID: 1923456139}
-  loadingCanvas: {fileID: 2045537841}
-  gameCanvas: {fileID: 473265039}
-  canvases: []
 --- !u!1001 &781978367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -787,7 +752,7 @@ PrefabInstance:
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 754340318}
+      objectReference: {fileID: 0}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -1869,6 +1834,7 @@ GameObject:
   - component: {fileID: 1923456139}
   - component: {fileID: 1923456140}
   - component: {fileID: 1923456137}
+  - component: {fileID: 1923456138}
   - component: {fileID: 1923456141}
   m_Layer: 0
   m_Name: Multiplayer Canvus
@@ -1914,6 +1880,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1923456138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923456135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4331bff977c4204f8e9f77d348b080f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!223 &1923456139
 Canvas:
   m_ObjectHideFlags: 0
@@ -1943,7 +1921,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923456135}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -1956,12 +1934,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1923456135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12e461c3398b700499fe9d1011dd78d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 3221422801f50e54489ce8303ffc2c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: 1
+  tweenType: 1
+  tweenMode: 1
   tweenTime: 0.5
-  fadeInOnStart: 1
+  alphaOut: 0
+  alphaIn: 1
+  uniformScale: 1
+  scaleOut: 2
+  scaleOutVector: {x: 0, y: 0}
+  scaleIn: 1
+  scaleInVector: {x: 1, y: 1}
+  positionOut: {x: 0, y: 0}
+  positionIn: {x: 0, y: 0}
+  rotationOut: 90
+  rotationIn: 0
 --- !u!1 &1935259713
 GameObject:
   m_ObjectHideFlags: 0
@@ -2068,7 +2057,6 @@ GameObject:
   - component: {fileID: 2045537841}
   - component: {fileID: 2045537840}
   - component: {fileID: 2045537839}
-  - component: {fileID: 2045537838}
   m_Layer: 0
   m_Name: Loading Canvas
   m_TagString: Untagged
@@ -2096,21 +2084,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2045537838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2045537836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12e461c3398b700499fe9d1011dd78d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 1
-  tweenTime: 0.5
-  fadeInOnStart: 0
 --- !u!114 &2045537839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2236,7 +2209,7 @@ PrefabInstance:
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 754340318}
+      objectReference: {fileID: 1923456138}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -2251,7 +2224,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: Join
+      value: TweenOut
       objectReference: {fileID: 0}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2259,7 +2232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: InterfaceManager, Assembly-CSharp
+      value: TweenBrain, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9079520499231995068, guid: 259d118997afde342b6cb7e814dac55b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

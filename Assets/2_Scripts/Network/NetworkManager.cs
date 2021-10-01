@@ -40,7 +40,7 @@ public class NetworkManager : Mirror.NetworkManager
     #region Client
     public override void OnStartClient()
     {
-        InterfaceManager.SwitchMenuState(InterfaceManager.MenuMode.Game);
+        // InterfaceManager.SwitchMenuState(InterfaceManager.MenuMode.Game);
     }
     public override void OnStopClient()
     {
@@ -52,7 +52,7 @@ public class NetworkManager : Mirror.NetworkManager
     }
     public override void OnClientDisconnect(NetworkConnection conn)
     {
-        InterfaceManager.SwitchMenuState(InterfaceManager.MenuMode.Multiplayer);
+        // InterfaceManager.SwitchMenuState(InterfaceManager.MenuMode.Multiplayer);
     }
     #endregion
 
