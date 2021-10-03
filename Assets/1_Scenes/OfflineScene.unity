@@ -1835,6 +1835,7 @@ GameObject:
   - component: {fileID: 1923456140}
   - component: {fileID: 1923456137}
   - component: {fileID: 1923456138}
+  - component: {fileID: 1923456141}
   m_Layer: 0
   m_Name: Multiplayer Canvus
   m_TagString: Untagged
@@ -1891,27 +1892,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4331bff977c4204f8e9f77d348b080f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stages:
-  - tweens:
-    - mode: 1
-      ease: 1
-      time: 0.5
-      delay: 0
-      alpha: 0
-      scale: 0
-      sizeVector: {x: 0, y: 0}
-      rotation: 90
-      scaleVector: {x: 0, y: 0}
-      positionVector: {x: 0, y: 0}
-      color: {r: 0, g: 0, b: 0, a: 0}
-      uniformScale: 0
-      completed: 0
-    onComplete:
-      m_PersistentCalls:
-        m_Calls: []
   beginOnStart: 1
   startStage: 0
   loop: 1
+  stages: []
 --- !u!223 &1923456139
 Canvas:
   m_ObjectHideFlags: 0
@@ -1945,6 +1929,14 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!222 &1923456141
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923456135}
+  m_CullTransparentMesh: 1
 --- !u!1 &1935259713
 GameObject:
   m_ObjectHideFlags: 0

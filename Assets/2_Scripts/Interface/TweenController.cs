@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 public class TweenController : MonoBehaviour
 {
     // Enums
     public enum TweenMode
     {
-        Alpha,
+        CanvasAlpha,
         Scale,
         Size,
         Color,
@@ -32,7 +34,8 @@ public class TweenController : MonoBehaviour
 
         // Variables repurposed for each tween mode
         // public float value;
-        // public float vector;
+        // public Vector2 vector;
+        // It's possible to achieve everything using only a single float and Vector2
         // This worked nicely, but we lost the ability to give each variable an attribute, such as Range & Min
 
         // Variables used for tweens
@@ -40,16 +43,16 @@ public class TweenController : MonoBehaviour
         public float alpha;
         [Min(0)] [Tooltip("Tweens the scale of the object")]
         public float scale;
-        [Tooltip("Tweens the width and height of the object")]
-        public Vector2 sizeVector;
-        [Tooltip("Tweens the rotation of the object (In degrees)")]
-        public float rotation = 180;
-        [Tooltip("Tweens the scale of the object non-uniformly")]
-        public Vector2 scaleVector;
-        [Tooltip("Tweens the position of the object")]
-        public Vector2 positionVector;
         [Tooltip("Tweens the color of the object")]
         public Color color = Color.white;
+        [Tooltip("Tweens the width and height of the object relative to the RectTransform's anchor points")]
+        public Vector2 sizeVector;
+        [Tooltip("Tweens the scale of the object non-uniformly")]
+        public Vector2 scaleVector;
+        [Tooltip("Tweens the rotation of the object (In degrees)")]
+        public float rotation = 180;
+        [Tooltip("Tweens the position of the object")]
+        public Vector2 positionVector;
 
         // Logic flags
         public bool uniformScale;
@@ -68,8 +71,7 @@ public class TweenController : MonoBehaviour
     private Canvas canvas;
     private CanvasGroup canvasGroup;
     private RectTransform rect;
-    
-    public List<TweenStage> stages = new List<TweenStage>();
+    private Image image;
 
     // Variables
     public bool beginOnStart;
@@ -77,12 +79,12 @@ public class TweenController : MonoBehaviour
     public bool loop;
     private int currentStage;
 
+    public List<TweenStage> stages = new List<TweenStage>();
+
     private void Start()
     {
         if (beginOnStart)
-        {
             StartTween(startStage);
-        }
     }
 
     public void StartTween(int stage)
@@ -118,26 +120,26 @@ public class TweenController : MonoBehaviour
             // Call the correct tween funciton
             switch (tween.mode)
             {
-                case TweenMode.Alpha:
-                    TweenAlpha(tween.alpha, tween.time, tween.delay, tween.ease);
+                case TweenMode.CanvasAlpha:
+                    TweenAlpha(tween);
                     break;
                 case TweenMode.Scale:
                     if (tween.uniformScale)
-                        TweenScale(tween.scale, tween.time, tween.delay, tween.ease);
+                        TweenScale(tween);
                     else
-                        TweenScale(tween.scaleVector, tween.time, tween.delay, tween.ease);
+                        TweenScale(tween);
                     break;
                 case TweenMode.Size:
-                    TweenSize(tween.sizeVector, tween.time, tween.delay, tween.ease);
-                    break;
-                case TweenMode.Position:
-                    TweenPosition(tween.positionVector, tween.time, tween.delay, tween.ease);
-                    break;
-                case TweenMode.Rotation:
-                    TweenRotation(tween.rotation, tween.time, tween.delay, tween.ease);
+                    TweenSize(tween);
                     break;
                 case TweenMode.Color:
-                    TweenColor(tween.color, tween.time, tween.delay, tween.ease);
+                    TweenColor(tween);
+                    break;
+                case TweenMode.Position:
+                    TweenPosition(tween);
+                    break;
+                case TweenMode.Rotation:
+                    TweenRotation(tween);
                     break;
             }
         }
@@ -149,7 +151,7 @@ public class TweenController : MonoBehaviour
             stage = 0;
         StartTween(stage);
     }
-    private void TweenAlpha(float alpha, float time, float delay, LeanTweenType ease)
+    private void TweenAlpha(Tween tween)
     {
         // Null checks
         if (!canvasGroup)
@@ -172,12 +174,12 @@ public class TweenController : MonoBehaviour
         }
         if (!canvas.enabled)
             canvas.enabled = true;
-        LeanTween.alphaCanvas(canvasGroup, alpha, time)
-            .setDelay(delay)
-            .setEase(ease)
-            .setOnComplete(OnAnyStageComplete);
+        LeanTween.alphaCanvas(canvasGroup, tween.alpha, tween.time)
+            .setDelay(tween.delay)
+            .setEase(tween.ease)
+                .setOnComplete(() => { OnAnyTweenComplete(tween); });
     }
-    private void TweenScale(float scale, float time, float delay, LeanTweenType ease)
+    private void TweenScale(Tween tween)
     {
         // Null checks
         if (!canvas)
@@ -200,84 +202,99 @@ public class TweenController : MonoBehaviour
         }
         if (!canvas.enabled)
             canvas.enabled = true;
-        LeanTween.scale(gameObject, Vector3.one * scale, time)
-            .setDelay(delay)
-            .setEase(ease)
-            .setOnComplete(OnAnyStageComplete);
-    }
-    private void TweenScale(Vector2 scale, float time, float delay, LeanTweenType ease)
-    {
-        if (!canvas)
+
+        if (tween.uniformScale)
         {
-            canvas = GetComponent<Canvas>();
-            if (canvas == null)
-            {
-                Debug.LogWarning($"A Canvas is required to tween scale, but it was missing on {gameObject.name}.");
-                return;
-            }
+            LeanTween.scale(gameObject, Vector3.one * tween.scale, tween.time)
+                .setDelay(tween.delay)
+                .setEase(tween.ease)
+                .setOnComplete(() => { OnAnyTweenComplete(tween); });
         }
-        if (!rect)
+        else
         {
-            rect = GetComponent<RectTransform>();
-            if (canvas == null)
-            {
-                Debug.LogWarning($"A RectTransform is required to tween scale, but it was missing on {gameObject.name}.");
-                return;
-            }
+            LeanTween.scale(gameObject, tween.scaleVector, tween.time)
+                .setDelay(tween.delay)
+                .setEase(tween.ease)
+                .setOnComplete(() => { OnAnyTweenComplete(tween); });
         }
-        LeanTween.scale(gameObject, scale, time)
-            .setDelay(delay)
-            .setEase(ease)
-            .setOnComplete(OnAnyStageComplete);
     }
-    private void TweenSize(Vector2 size, float time, float delay, LeanTweenType ease)
+    private void TweenSize(Tween tween)
     {
         if (!rect)
         {
             rect = GetComponent<RectTransform>();
-            if (canvas == null)
+            if (rect == null)
             {
                 Debug.LogWarning($"A RectTransform is required to tween size, but it was missing on {gameObject.name}.");
                 return;
             }
         }
-        LeanTween.size(rect, size, time)
-            .setDelay(delay)
-            .setEase(ease)
-            .setOnComplete(OnAnyStageComplete);
+        LeanTween.size(rect, tween.sizeVector, tween.time)
+            .setDelay(tween.delay)
+            .setEase(tween.ease)
+            .setOnComplete(() => { OnAnyTweenComplete(tween); });
     }
-    private void TweenPosition(Vector2 position, float time, float delay, LeanTweenType ease)
+    private void TweenColor(Tween tween)
     {
-        LeanTween.moveLocal(gameObject, position, time)
-            .setDelay(delay)
-            .setEase(ease)
-            .setOnComplete(OnAnyStageComplete);
+        if (!image)
+        {
+            image = GetComponent<Image>();
+            if (image == null)
+            {
+                Debug.LogWarning($"An Image is required to tween color, but it was missing on {gameObject.name}.");
+                return;
+            }
+        }
+        LeanTween.value(image.gameObject, ColorChangeCallback, image.color, tween.color, tween.time)
+            .setDelay(tween.delay)
+            .setEase(tween.ease)
+            .setOnComplete(() => { OnAnyTweenComplete(tween); });
     }
-    private void TweenRotation(float rotation, float time, float delay, LeanTweenType ease)
+    private void TweenPosition(Tween tween)
     {
-        LeanTween.rotateAroundLocal(gameObject, new Vector3(0, 0, 1), rotation, time)
-            .setDelay(delay)
-            .setEase(ease)
-            .setOnComplete(OnAnyStageComplete);
+        LeanTween.moveLocal(gameObject, tween.positionVector, tween.time)
+            .setDelay(tween.delay)
+            .setEase(tween.ease)
+            .setOnComplete(() => { OnAnyTweenComplete(tween); });
     }
-    private void TweenColor(Color color, float time, float delay, LeanTweenType ease)
+    private void TweenRotation(Tween tween)
     {
-        LeanTween.color(gameObject, color, time)
-            .setDelay(delay)
-            .setEase(ease)
-            .setOnComplete(OnAnyStageComplete);
+        LeanTween.rotateAroundLocal(gameObject, new Vector3(0, 0, 1), tween.rotation, tween.time)
+            .setDelay(tween.delay)
+            .setEase(tween.ease)
+            .setOnComplete(() => { OnAnyTweenComplete(tween); });
+    }
+    // Used by TweenColor() to change the color of the image at each step of the tween
+    private void ColorChangeCallback(Color color)
+    {
+        image.color = color;
+    }
+    // Called by every tween when it completes
+    private void OnAnyTweenComplete(Tween tween)
+    {
+        tween.completed = true;
+        CheckStageComplete(currentStage);
     }
     private void CheckStageComplete(int stage)
     {
+        foreach(Tween tween in stages[stage].tweens)
+        {
+            // If any tween isn't done, return
+            if (!tween.completed)
+                return;
+        }
 
+        // All tweens are done so call stage complete 
+        OnStageComplete(stage);
     }
-    // Called when any stage completes all tweens
-    private void OnAnyStageComplete()
+    private void OnStageComplete(int stage)
     {
         if (loop)
         {
             currentStage++;
             TweenNextStage(currentStage);
         }
+
+        stages[stage].onComplete?.Invoke();
     }
 }
