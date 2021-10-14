@@ -57,6 +57,7 @@ public class TweenController : MonoBehaviour
         // Logic flags
         public bool uniformScale;
         public bool completed;
+        public bool hideOnComplete;
     }
     [System.Serializable]
     public class TweenStage
@@ -166,7 +167,7 @@ public class TweenController : MonoBehaviour
         if (!canvas)
         {
             canvas = GetComponent<Canvas>();
-            if (canvasGroup == null)
+            if (canvas == null)
             {
                 Debug.LogWarning($"A Canvas is required to tween alpha, but it was missing on {gameObject.name}.");
                 return;
@@ -182,19 +183,10 @@ public class TweenController : MonoBehaviour
     private void TweenScale(Tween tween)
     {
         // Null checks
-        if (!canvas)
-        {
-            canvas = GetComponent<Canvas>();
-            if (canvas == null)
-            {
-                Debug.LogWarning($"A Canvas is required to tween scale, but it was missing on {gameObject.name}.");
-                return;
-            }
-        }
         if (!rect)
         {
             rect = GetComponent<RectTransform>();
-            if (canvas == null)
+            if (rect == null)
             {
                 Debug.LogWarning($"A RectTransform is required to tween scale, but it was missing on {gameObject.name}.");
                 return;
@@ -202,7 +194,6 @@ public class TweenController : MonoBehaviour
         }
         if (!canvas.enabled)
             canvas.enabled = true;
-
         if (tween.uniformScale)
         {
             LeanTween.scale(gameObject, Vector3.one * tween.scale, tween.time)
@@ -273,6 +264,22 @@ public class TweenController : MonoBehaviour
     private void OnAnyTweenComplete(Tween tween)
     {
         tween.completed = true;
+
+        if (tween.hideOnComplete)
+        {
+            if (!canvas)
+            {
+                canvas = GetComponent<Canvas>();
+                if (canvas == null)
+                {
+                    Debug.LogWarning($"A Canvas is required to tween alpha, but it was missing on {gameObject.name}.");
+                    return;
+                }
+            }
+            if (canvas.enabled)
+                canvas.enabled = false;
+        }    
+
         CheckStageComplete(currentStage);
     }
     private void CheckStageComplete(int stage)
