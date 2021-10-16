@@ -76,6 +76,7 @@ public class TweenController : MonoBehaviour
 
     // Variables
     public bool beginOnStart;
+    [Min(1)]
     public int startStage;
     public bool loop;
     private int currentStage;
@@ -85,7 +86,7 @@ public class TweenController : MonoBehaviour
     private void Start()
     {
         if (beginOnStart)
-            StartTween(startStage);
+            StartTween(startStage - 1);
     }
 
     public void StartTween(int stage)
