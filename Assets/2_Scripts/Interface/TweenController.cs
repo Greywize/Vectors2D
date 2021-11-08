@@ -8,57 +8,7 @@ using UnityEngine.UI;
 [DisallowMultipleComponent]
 public class TweenController : MonoBehaviour
 {
-    // Enums
-    public enum TweenMode
-    {
-        CanvasAlpha,
-        Scale,
-        Size,
-        Color,
-        Position,
-        Rotation,
-    }
     // Nested classes
-    [System.Serializable]
-    public class Tween
-    {
-        // Determines what we tween, such as the alpha or scale
-        public TweenMode mode;
-        // The tween curve
-        public LeanTweenType ease = LeanTweenType.linear;
-        // The length of the tween in seconds
-        [Min(0)] [Tooltip("How long the tween will take to complete (In seconds)")]
-        public float time = 0.5f;
-        [Min(0)] [Tooltip("How long we delay the tween before starting (In seconds)")]
-        public float delay;
-
-        // Variables repurposed for each tween mode
-        // public float value;
-        // public Vector2 vector;
-        // It's possible to achieve everything using only a single float and Vector2
-        // This worked nicely, but we lost the ability to give each variable an attribute, such as Range & Min
-
-        // Variables used for tweens
-        [Range(0,1)] [Tooltip("Tweens the alpha value of a sibling CanvasGroup conponent")]
-        public float alpha;
-        [Min(0)] [Tooltip("Tweens the scale of the object")]
-        public float scale;
-        [Tooltip("Tweens the color of the object")]
-        public Color color = Color.white;
-        [Tooltip("Tweens the width and height of the object relative to the RectTransform's anchor points")]
-        public Vector2 sizeVector;
-        [Tooltip("Tweens the scale of the object non-uniformly")]
-        public Vector2 scaleVector;
-        [Tooltip("Tweens the rotation of the object (In degrees)")]
-        public float rotation = 180;
-        [Tooltip("Tweens the position of the object")]
-        public Vector2 positionVector;
-
-        // Logic flags
-        public bool uniformScale;
-        public bool completed;
-        public bool hideOnComplete;
-    }
     [System.Serializable]
     public class TweenStage
     {
@@ -76,9 +26,11 @@ public class TweenController : MonoBehaviour
 
     // Variables
     public bool beginOnStart;
-    [Min(1)]
     public int startStage;
+    [Tooltip("Loops all stages continuously")]
     public bool loop;
+    [Tooltip("Plays all stages once")]
+    public bool playAll;
     private int currentStage;
 
     public List<TweenStage> stages = new List<TweenStage>();
@@ -86,10 +38,56 @@ public class TweenController : MonoBehaviour
     private void Start()
     {
         if (beginOnStart)
-            StartTween(startStage - 1);
+            StartStage(startStage);
     }
 
-    public void StartTween(int stage)
+    public Tween StartTween(Tween tween)
+    {
+        // Set completed to be false
+        tween.completed = false;
+
+        // Error checking
+        if (tween.time == 0)
+        {
+            Debug.Log($"A tween on {gameObject.name} has a time of zero, which won't do anything");
+            return tween;
+        }
+        if (tween.ease == LeanTweenType.notUsed)
+        {
+            Debug.LogWarning($"A tween on {gameObject.name} has an ease type of NotUsed which won't do anything.");
+            return tween;
+        }
+
+        // Call the correct tween funciton
+        switch (tween.mode)
+        {
+            case Tween.TweenMode.CanvasAlpha:
+                TweenAlpha(tween);
+                break;
+            case Tween.TweenMode.Scale:
+                if (tween.uniformScale)
+                    TweenScale(tween);
+                else
+                    TweenScale(tween);
+                break;
+            case Tween.TweenMode.Size:
+                TweenSize(tween);
+                break;
+            case Tween.TweenMode.Color:
+                TweenColor(tween);
+                break;
+            case Tween.TweenMode.Position:
+                TweenPosition(tween);
+                break;
+            case Tween.TweenMode.Rotation:
+                TweenRotation(tween);
+                break;
+        }
+
+        return tween;
+    }
+
+    public void StartStage(int stage)
     {
         if (stage > stages.Count + 1 || stages.Count == 0)
         {
@@ -110,7 +108,7 @@ public class TweenController : MonoBehaviour
             // Error checking
             if (tween.time == 0)
             {
-                Debug.LogWarning($"A tween on {gameObject.name} has a time of zero which won't do anything.");
+                Debug.Log($"A tween on {gameObject.name} has a time of zero, which won't do anything.");
                 return;
             }
             if (tween.ease == LeanTweenType.notUsed)
@@ -122,25 +120,25 @@ public class TweenController : MonoBehaviour
             // Call the correct tween funciton
             switch (tween.mode)
             {
-                case TweenMode.CanvasAlpha:
+                case Tween.TweenMode.CanvasAlpha:
                     TweenAlpha(tween);
                     break;
-                case TweenMode.Scale:
+                case Tween.TweenMode.Scale:
                     if (tween.uniformScale)
                         TweenScale(tween);
                     else
                         TweenScale(tween);
                     break;
-                case TweenMode.Size:
+                case Tween.TweenMode.Size:
                     TweenSize(tween);
                     break;
-                case TweenMode.Color:
+                case Tween.TweenMode.Color:
                     TweenColor(tween);
                     break;
-                case TweenMode.Position:
+                case Tween.TweenMode.Position:
                     TweenPosition(tween);
                     break;
-                case TweenMode.Rotation:
+                case Tween.TweenMode.Rotation:
                     TweenRotation(tween);
                     break;
             }
@@ -151,7 +149,7 @@ public class TweenController : MonoBehaviour
     {
         if (stage >= stages.Count)
             stage = 0;
-        StartTween(stage);
+        StartStage(stage);
     }
     private void TweenAlpha(Tween tween)
     {
@@ -177,9 +175,9 @@ public class TweenController : MonoBehaviour
         if (!canvas.enabled)
             canvas.enabled = true;
         LeanTween.alphaCanvas(canvasGroup, tween.alpha, tween.time)
-            .setDelay(tween.delay)
-            .setEase(tween.ease)
-                .setOnComplete(() => { OnAnyTweenComplete(tween); });
+                    .setDelay(tween.delay)
+                    .setEase(tween.ease)
+                    .setOnComplete(() => { OnAnyTweenComplete(tween); });
     }
     private void TweenScale(Tween tween)
     {
@@ -301,6 +299,12 @@ public class TweenController : MonoBehaviour
         {
             currentStage++;
             TweenNextStage(currentStage);
+        }
+        else if (playAll)
+        {
+            currentStage++;
+            if (currentStage < stages.Count)
+                StartStage(currentStage);
         }
 
         stages[stage].onComplete?.Invoke();

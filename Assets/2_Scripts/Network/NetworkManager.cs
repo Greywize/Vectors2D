@@ -5,19 +5,6 @@ using Mirror;
 
 public class NetworkManager : Mirror.NetworkManager
 {
-    /*public static NetworkManager Instance;
-
-    public override void Awake()
-    {
-        base.Awake();
-
-        // If there is already an instance
-        if (Instance != null)
-            Destroy(this);
-        // Otherwise, this is our instance
-        Instance = this;
-    }*/
-
     #region Server
     public override void OnStartServer()
     {
@@ -40,7 +27,7 @@ public class NetworkManager : Mirror.NetworkManager
     #region Client
     public override void OnStartClient()
     {
-        // InterfaceManager.SwitchMenuState(InterfaceManager.MenuMode.Game);
+        
     }
     public override void OnStopClient()
     {
@@ -52,12 +39,28 @@ public class NetworkManager : Mirror.NetworkManager
     }
     public override void OnClientDisconnect(NetworkConnection conn)
     {
-        // InterfaceManager.SwitchMenuState(InterfaceManager.MenuMode.Multiplayer);
+        
     }
     #endregion
 
+    #region Host
+    public override void OnStartHost()
+    {
+        base.OnStartHost();
+    }
+    public override void OnStopHost()
+    {
+        base.OnStopHost();
+    }
+    #endregion
+    public void Host()
+    {
+        StartHost();
+    }
     public void Disconnect()
     {
+        Debug.Log(mode);
+
         switch (mode)
         {
             case NetworkManagerMode.Offline:
@@ -72,7 +75,5 @@ public class NetworkManager : Mirror.NetworkManager
                 StopHost();
                 return;
         }
-
-        // InterfaceManager.SwitchMenuState(InterfaceManager.MenuMode.Multiplayer);
     }
 }
