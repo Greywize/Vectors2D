@@ -91,7 +91,22 @@ namespace LobbySystem
                 return false;
             }
         }
+        public void StartGame()
+        {
 
+        }
+        public void LeaveGame(GameObject player)
+        {
+            for (int i = 0; i < matches.Count; i++)
+            {
+                if (matches[i].players.Contains(player))
+                {
+                    matches[i].players.Remove(player);
+
+                    break;
+                }
+            }
+        }
         // Generate a random string of five characters & numbers
         public static string GetRandomMatchID()
         {

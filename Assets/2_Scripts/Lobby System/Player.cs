@@ -21,11 +21,10 @@ namespace LobbySystem
             if (isLocalPlayer)
                 LocalPlayer = this;
             else
-            {
-                UILobby.Instance.SpawnPlayerPrefab(this);
-            }
+                UILobbyOld.Instance.SpawnPlayerPrefab(LocalPlayer);
         }
-        
+
+        #region Host Match
         public void HostGame()
         {
             // Get a random match id from MatchMaker
@@ -34,7 +33,6 @@ namespace LobbySystem
             // Call for the server to host a game with the our match id
             CmdHostGame(matchID);
         }
-
         [Command]
         // Server side command for hosting a game
         void CmdHostGame(string matchID)
@@ -54,21 +52,21 @@ namespace LobbySystem
                 TargetHostGame(false, matchID);
             }
         }
-
         [TargetRpc]
         void TargetHostGame (bool success, string matchID)
         {
-            UILobby.Instance.HostSuccess(success, matchID);
+            UILobbyOld.Instance.HostSuccess(success, matchID);
         }
+        #endregion
 
+        #region Join Match
         public void JoinGame(string matchID)
         {
-            // Call for the server to host a game with the our match id
+            // Call command to join game using the matchID
             CmdJoinGame(matchID);
         }
-
         [Command]
-        // Server side command for hosting a game
+        // Server side command for joining a game
         void CmdJoinGame(string matchID)
         {
             this.matchID = matchID;
@@ -79,18 +77,63 @@ namespace LobbySystem
                 networkMatch.matchId = matchID.ToGuid();
                 TargetJoinGame(true, matchID);
             }
-            // Match hosting failed
+            // Failed to join match
             else
             {
                 Debug.LogWarning($"<color=red>Failed to join match.</color>");
                 TargetJoinGame(false, matchID);
             }
         }
-
         [TargetRpc]
         void TargetJoinGame(bool success, string matchID)
         {
-            UILobby.Instance.JoinSuccess(success, matchID);
+            UILobbyOld.Instance.JoinSuccess(success, matchID);
         }
+        #endregion
+
+        #region Lobby
+        public void StartGame()
+        {
+            // Send a command to the server to start the game
+            CmdStartGame();
+        }
+        [Command]
+        // Server side command for hosting a game
+        void CmdStartGame()
+        {
+            MatchMaker.Instance.StartGame();
+            Debug.Log($"<color=green>Starting game.</color>");
+            RpcStartGame();
+        }
+        [ClientRpc]
+        void RpcStartGame()
+        {
+            // Load game scene additively
+        }
+        public void LeaveGame()
+        {
+            // Request to leave the game
+            CmdLeaveGame(gameObject);
+        }
+        [Command]
+        // Called on the server when a player requests to leave the game
+        void CmdLeaveGame(GameObject player)
+        {
+            MatchMaker.Instance.LeaveGame(player);
+            Debug.Log($"<color=green>Leaving game.</color>");
+            RpcRemovePlayerPrefab(player);
+            TargetLeaveGame();
+        }
+        [TargetRpc]
+        void TargetLeaveGame()
+        {
+            UILobbyOld.Instance.LeaveSuccess();
+        }
+        [ClientRpc]
+        void RpcRemovePlayerPrefab(GameObject player)
+        {
+            UILobbyOld.Instance.RemovePlayerPrefab(player);
+        }
+        #endregion
     }
 }

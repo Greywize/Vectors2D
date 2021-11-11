@@ -11,10 +11,18 @@ namespace LobbySystem
         [SerializeField] TMPro.TMP_Text nameText;
         Player player;
 
+        private void Start()
+        {
+            
+        }
         public void SetPlayer(Player player)
         {
             this.player = player;
             nameText.text = "Player " + player.playerIndex.ToString();
+        }
+        public Player GetPlayer()
+        {
+            return player;
         }
     }
 }

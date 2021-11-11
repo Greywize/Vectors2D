@@ -20,7 +20,7 @@ public class CanvasInterface : MonoBehaviour
         // Show the target canvas
         target.Show();
         // Update the global current canvas
-        InterfaceManager.Instance.current = target;
+        InterfaceManager.Instance.SetCurrent(target);
     }
     public void Show()
     {

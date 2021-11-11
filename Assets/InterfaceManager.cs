@@ -6,11 +6,10 @@ public class InterfaceManager : MonoBehaviour
 {
     public static InterfaceManager Instance;
 
-    public bool dontDestroyOnLoad = true;
+    public bool dontDestroyOnLoad = false;
 
-    [HideInInspector]
-    public CanvasInterface current;
-    public CanvasInterface main;
+    CanvasInterface current;
+    [SerializeField] CanvasInterface main;
 
     private void Awake()
     {
@@ -18,7 +17,7 @@ public class InterfaceManager : MonoBehaviour
             Destroy(gameObject);
         Instance = this;
 
-        Screen.SetResolution(1920, 1080, false);
+        Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
 
         if (dontDestroyOnLoad)
         {
@@ -29,7 +28,6 @@ public class InterfaceManager : MonoBehaviour
     {
         current = FindFirstActive();
     }
-
     // Returns the first active canvas found amongst all CanvasInterfaces 
     public CanvasInterface FindFirstActive()
     {
@@ -40,14 +38,36 @@ public class InterfaceManager : MonoBehaviour
         }
         return null;
     }
-
-    public void NavigateToMainMenu()
+    public void Navigate(CanvasInterface screen)
     {
-        current.Navigate(main);
+        current.Navigate(screen);
+        current = screen;
     }
-
+    public void SetCurrent(CanvasInterface newCurrent)
+    {
+        current = newCurrent;
+    }
     public void QuitApplication()
     {
         Application.Quit();
+    }
+
+    public void Play()
+    {
+        // Attempt to join master server
+    }
+    public void HostLocal()
+    {
+        // UIMultiplayer.Instance.EnableLocalButtons(false);
+
+        NetworkManager.Instance.networkAddress = "localhost";
+        NetworkManager.Instance.StartHost();
+    }
+    public void JoinLocal()
+    {
+        // UIMultiplayer.Instance.EnableLocalButtons(false);
+
+        NetworkManager.Instance.networkAddress = "localhost";
+        NetworkManager.Instance.StartClient();
     }
 }

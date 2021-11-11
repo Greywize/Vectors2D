@@ -6,9 +6,9 @@ using TMPro;
 
 namespace LobbySystem
 {
-    public class UILobby : MonoBehaviour
+    public class UILobbyOld : MonoBehaviour
     {
-        public static UILobby Instance;
+        public static UILobbyOld Instance;
 
         public CanvasInterface mainCanvas;
         public CanvasInterface lobbyCanvas;
@@ -21,6 +21,8 @@ namespace LobbySystem
         [SerializeField] Transform playerPrefabContainer;
         [SerializeField] GameObject playerLobbyPrefab;
         [SerializeField] TMPro.TMP_Text matchIDText;
+        [SerializeField] Button startButton;
+        [SerializeField] Button leaveButton;
 
         private void Awake()
         {
@@ -34,13 +36,14 @@ namespace LobbySystem
             // Disable UI interactions to prevent spam clicking
             EnableInteraction(false);
 
-            Player.LocalPlayer.JoinGame(matchIDInput.text);
+            Player.LocalPlayer.JoinGame(matchIDInput.text.ToUpper());
         }
         public void JoinSuccess(bool success, string matchID)
         {
             if (success)
             {
-                InterfaceManager.Instance.current.Navigate(lobbyCanvas);
+                startButton.interactable = false;
+                InterfaceManager.Instance.Navigate(lobbyCanvas);
 
                 matchIDText.text = matchID;
 
@@ -63,7 +66,8 @@ namespace LobbySystem
         {
             if (success)
             {
-                InterfaceManager.Instance.current.Navigate(lobbyCanvas);
+                startButton.interactable = true;
+                InterfaceManager.Instance.Navigate(lobbyCanvas);
 
                 matchIDText.text = matchID;
 
@@ -74,6 +78,34 @@ namespace LobbySystem
                 EnableInteraction(true);
             }
         }
+        public void Leave()
+        {
+            Player.LocalPlayer.LeaveGame();
+        }
+        public void LeaveSuccess()
+        {
+            InterfaceManager.Instance.Navigate(mainCanvas);
+
+            EnableInteraction(true);
+        }
+        public void RemovePlayerPrefab(GameObject player)
+        {
+            for (int i = 0; i < playerPrefabContainer.childCount; i++)
+            {
+                GameObject prefab = playerPrefabContainer.GetChild(i).gameObject;
+
+                if (prefab.GetComponent<UIPlayer>().GetPlayer() == player)
+                {
+                    Destroy(prefab);
+                    break;
+                }
+            }
+
+        }
+        public void DisconnectFromMasterServer()
+        {
+            NetworkManager.Instance.Disconnect();
+        }
         // Whether the lobby buttons & match ID input field should be interactable 
         private void EnableInteraction(bool enabled)
         {
@@ -81,7 +113,6 @@ namespace LobbySystem
             joinButton.interactable = enabled;
             matchIDInput.interactable = enabled;
         }
-
         public void SpawnPlayerPrefab(Player player)
         {
             GameObject newPlayer = Instantiate(playerLobbyPrefab, playerPrefabContainer);
