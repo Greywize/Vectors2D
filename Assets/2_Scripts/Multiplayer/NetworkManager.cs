@@ -5,6 +5,7 @@ using Mirror;
 using System;
 using MatchMade;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class NetworkManager : Mirror.NetworkManager
 {
@@ -31,26 +32,25 @@ public class NetworkManager : Mirror.NetworkManager
     public override void OnServerConnect(NetworkConnection conn)
     {
         Debug.Log($"<color=#33FF99>[Server]</color> Client connected. ID: {conn.connectionId}");
+
+        ServerManager.Instance.OnServerConnect(conn);
     }
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        ServerManager.Instance.TargetOnClientDisconnect(conn);
-
         Debug.Log($"<color=#33FF99>[Server]</color> Client disconnected. ID: {conn.connectionId}");
         NetworkServer.DestroyPlayerForConnection(conn);
 
-        ServerManager.Instance.UpdatePlayerCount();
+        ServerManager.Instance.OnServerDisconnect(conn);
     }
     public override void OnServerReady(NetworkConnection conn)
     {
         base.OnServerReady(conn);
 
-        // This is called only once we know the connection is ready & can recieve RPCs
-        ServerManager.Instance.OnServerConnect(conn);
+        ServerManager.Instance.OnServerReady(conn);
     }
     public override void OnServerError(NetworkConnection conn, Exception exception)
     {
-        Debug.Log($"<color=#33FF99>[Server]</color> <color=#FF333A>{exception.Message}</color>");
+        Debug.LogError($"<color=#33FF99>[Server]</color> <color=#FF333A>{exception.Message}</color>");
     }
     #endregion
 
@@ -73,13 +73,11 @@ public class NetworkManager : Mirror.NetworkManager
     {
         Debug.Log($"<color=#4CC4FF>[Client]</color> Disconnected.");
 
-        // In the event we are disconnected but the NetworkClient is still active,
-        // if (NetworkClient.active)
-        //     NetworkClient.Disconnect();
+        UILobby.Instance.UpdateClientType();
     }
     public override void OnClientError(Exception exception)
     {
-        Debug.LogError($"<color=#4CC4FF>[Client]</color> <color=#FF333A>{exception.Message}</color>");
+        Debug.LogError($"<color=#4CC4FF>[Client]</color><color=#FF333A>{exception.Message}</color>");
     }
     #endregion
 

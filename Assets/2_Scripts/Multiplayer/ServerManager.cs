@@ -9,8 +9,8 @@ namespace MatchMade
     {
         public static ServerManager Instance;
 
-        [SyncVar]
-        public int clientCount;
+        [SyncVar(hook = "RpcUpdatePlayerCount")]
+        public int connectionsCount;
 
         private void Awake()
         {
@@ -23,45 +23,38 @@ namespace MatchMade
         [Server]
         public void OnServerConnect(NetworkConnection conn)
         {
-            GameObject player = Instantiate(NetworkManager.Instance.playerPrefab);
-            player.name = $"Player {conn.connectionId}";
-
-            NetworkServer.AddPlayerForConnection(conn, player);
-
-            TargetOnClientConnect(conn);
-
-            UpdatePlayerCount();
+            connectionsCount = NetworkServer.connections.Count;
         }
         // Called on the server when a client disconnects
         [Server]
         public void OnServerDisconnect(NetworkConnection conn)
         {
-            UpdatePlayerCount();
-        }
-
-        [Command(requiresAuthority = false)]
-        public void CmdUpdatePlayerCount()
-        {
-            UpdatePlayerCount();
+            connectionsCount = NetworkServer.connections.Count;
         }
         [Server]
-        public void UpdatePlayerCount()
+        // Called on the server when a client is ready & has loaded the scene
+        public void OnServerReady(NetworkConnection conn)
         {
-            clientCount = NetworkServer.connections.Count;
+            connectionsCount = NetworkServer.connections.Count;
 
-            Debug.Log($"<color=#33FF99>[Server]</color> Players connected: {clientCount}");
+            GameObject player = Instantiate(NetworkManager.Instance.playerPrefab);
+            player.name = $"Player {conn.connectionId}";
 
-            UILobby.Instance.RpcUpdatePlayerCount();
+            NetworkServer.AddPlayerForConnection(conn, player);
+
+            TargetUpdateClientTypeText(conn);
+        }
+        [Client]
+
+        // BUG: Doesn't get called on clients in builds
+        private void RpcUpdatePlayerCount(int oldCount, int newCount)
+        {
+            UILobby.Instance.UpdatePlayerCount(newCount);
         }
         [TargetRpc]
-        public void TargetOnClientConnect(NetworkConnection target)
+        public void TargetUpdateClientTypeText(NetworkConnection conn)
         {
-            Debug.Log($"<color=#4CC4FF>[Target Rpc]</color> Client is ready.");
-        }
-        [TargetRpc]
-        public void TargetOnClientDisconnect(NetworkConnection target)
-        {
-            Debug.Log($"<color=#4CC4FF>[Target Rpc]</color> Client disconnecting.");
+            UILobby.Instance.UpdateClientType();
         }
     }
 }

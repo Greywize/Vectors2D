@@ -10,6 +10,8 @@ namespace MatchMade
         public static UILobby Instance;
 
         [SerializeField] TMPro.TMP_Text clientsText;
+        [SerializeField] TMPro.TMP_Text clientTypeText;
+
 
         public void Awake()
         {
@@ -22,12 +24,31 @@ namespace MatchMade
         {
             NetworkManager.Instance.Disconnect();
         }
-
-        [ClientRpc]
-        public void RpcUpdatePlayerCount()
+        public void UpdateClientType()
         {
-            Debug.Log($"<color=#4CC4FF>[Client Rpc]</color> Updating connected players text. Players connected: {ServerManager.Instance.clientCount}");
-            clientsText.text = $"Players: {ServerManager.Instance.clientCount}";
+            Debug.Log($"<color=#4CC4FF>[Client]</color> Type is {NetworkManager.Instance.mode}");
+            switch (NetworkManager.Instance.mode)
+            {
+                case NetworkManagerMode.Offline:
+                    clientTypeText.text = $"Offline";
+                    break;
+                case NetworkManagerMode.ServerOnly:
+                    clientTypeText.text = $"Server";
+                    break;
+                case NetworkManagerMode.ClientOnly:
+                    clientTypeText.text = $"Client";
+                    break;
+                case NetworkManagerMode.Host:
+                    clientTypeText.text = $"Host";
+                    break;
+                default:
+                    break;
+            }
+        }
+        public void UpdatePlayerCount(int count)
+        {
+            Debug.Log($"<color=#4CC4FF>[Client]</color> Clients: {count}");
+            clientsText.text = $"Players: {count}";
         }
     }
 }
