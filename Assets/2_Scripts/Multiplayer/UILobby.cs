@@ -9,9 +9,10 @@ namespace MatchMade
     {
         public static UILobby Instance;
 
+        [Header("Debug UI Elements")]
+        [SerializeField] TMPro.TMP_Text addressText;
         [SerializeField] TMPro.TMP_Text clientsText;
         [SerializeField] TMPro.TMP_Text clientTypeText;
-
 
         public void Awake()
         {
@@ -24,9 +25,13 @@ namespace MatchMade
         {
             NetworkManager.Instance.Disconnect();
         }
+        [TargetRpc]
+        public void TargetUpdateDebugElements(NetworkConnection conn, string address)
+        {
+            addressText.text = address;
+        }
         public void UpdateClientType()
         {
-            Debug.Log($"<color=#4CC4FF>[Client]</color> Type is {NetworkManager.Instance.mode}");
             switch (NetworkManager.Instance.mode)
             {
                 case NetworkManagerMode.Offline:
@@ -47,7 +52,6 @@ namespace MatchMade
         }
         public void UpdatePlayerCount(int count)
         {
-            Debug.Log($"<color=#4CC4FF>[Client]</color> Clients: {count}");
             clientsText.text = $"Players: {count}";
         }
     }

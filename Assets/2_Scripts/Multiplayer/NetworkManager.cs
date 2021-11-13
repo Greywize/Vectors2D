@@ -11,6 +11,9 @@ public class NetworkManager : Mirror.NetworkManager
 {
     public static NetworkManager Instance;
 
+    public bool serverLogs = true;
+    public bool clientLogs = true;
+
     public override void Awake()
     {
         base.Awake();
@@ -23,61 +26,92 @@ public class NetworkManager : Mirror.NetworkManager
     #region Server
     public override void OnStartServer()
     {
-        Debug.Log($"<color=#33FF99>[Server]</color> Started.");
+        if (serverLogs)
+            Debug.Log($"<color=#33FF99>[Server]</color> Started.");
     }
     public override void OnStopServer()
     {
-        Debug.Log($"<color=#33FF99>[Server]</color> Stopped.");
+        if (serverLogs)
+            Debug.Log($"<color=#33FF99>[Server]</color> Stopped.");
     }
+
+    // Called on the server when a client connects - Too early for Client & Target RPCs
     public override void OnServerConnect(NetworkConnection conn)
     {
-        Debug.Log($"<color=#33FF99>[Server]</color> Client connected. ID: {conn.connectionId}");
+        ServerManager.Instance.connectionsCount = NetworkServer.connections.Count;
+
+        if (serverLogs)
+            Debug.Log($"<color=#33FF99>[Server]</color> Client connected. ID: {conn.connectionId}");
 
         ServerManager.Instance.OnServerConnect(conn);
     }
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        Debug.Log($"<color=#33FF99>[Server]</color> Client disconnected. ID: {conn.connectionId}");
+        ServerManager.Instance.connectionsCount = NetworkServer.connections.Count;
+        
+        if (serverLogs)
+            Debug.Log($"<color=#33FF99>[Server]</color> Client disconnected. ID: {conn.connectionId}");
+
         NetworkServer.DestroyPlayerForConnection(conn);
 
         ServerManager.Instance.OnServerDisconnect(conn);
     }
+    // Called on the server when a client is ready & has loaded the scene - Client & Target RPCs NOT contained on the player object will work after this is called
     public override void OnServerReady(NetworkConnection conn)
     {
-        base.OnServerReady(conn);
+        GameObject player = Instantiate(playerPrefab);
+        player.name = $"Player {conn.connectionId}";
+
+        // Add player object for connection to the scene
+        NetworkServer.AddPlayerForConnection(conn, player);
+        
+        // --- > Client & Target RPCs contained on the player object will work from this point
+
+        ServerManager.Instance.TargetOnClientReady(conn);
+        UILobby.Instance.TargetUpdateDebugElements(conn, networkAddress);
 
         ServerManager.Instance.OnServerReady(conn);
     }
     public override void OnServerError(NetworkConnection conn, Exception exception)
     {
-        Debug.LogError($"<color=#33FF99>[Server]</color> <color=#FF333A>{exception.Message}</color>");
+        if (serverLogs)
+            Debug.LogError($"<color=#33FF99>[Server]</color> <color=#FF333A>{exception.Message}</color>");
     }
     #endregion
-
+    
     #region Client
     public override void OnStartClient()
     {
-        Debug.Log($"<color=#4CC4FF>[Client]</color> Started.");
+        if (clientLogs)
+            Debug.Log($"<color=#4CC4FF>[Client]</color> Started.");
     }
     public override void OnStopClient()
     {
-        Debug.Log($"<color=#4CC4FF>[Client]</color> Stopped.");
+        if (clientLogs)
+            Debug.Log($"<color=#4CC4FF>[Client]</color> Stopped.");
     }
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
 
-        Debug.Log($"<color=#4CC4FF>[Client]</color> Connected.");
+        if (clientLogs)
+            Debug.Log($"<color=#4CC4FF>[Client]</color> Connected to {networkAddress} as {mode}. Players: {NetworkServer.connections.Count}");
     }
     public override void OnClientDisconnect(NetworkConnection conn)
     {
-        Debug.Log($"<color=#4CC4FF>[Client]</color> Disconnected.");
-
-        UILobby.Instance.UpdateClientType();
+        if (clientLogs)
+            Debug.Log($"<color=#4CC4FF>[Client]</color> Disconnected.");
+    }
+    public override void OnClientSceneChanged(NetworkConnection conn)
+    {
+        // We've loaded the online scene so set our client as ready to receive remote actions
+        if (!NetworkClient.ready) 
+            NetworkClient.Ready();
     }
     public override void OnClientError(Exception exception)
     {
-        Debug.LogError($"<color=#4CC4FF>[Client]</color><color=#FF333A>{exception.Message}</color>");
+        if (clientLogs)
+            Debug.LogError($"<color=#4CC4FF>[Client]</color><color=#FF333A>{exception.Message}</color>");
     }
     #endregion
 

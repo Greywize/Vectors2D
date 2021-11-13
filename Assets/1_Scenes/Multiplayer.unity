@@ -1124,6 +1124,8 @@ MonoBehaviour:
   autoCreatePlayer: 0
   playerSpawnMethod: 0
   spawnPrefabs: []
+  serverLogs: 1
+  clientLogs: 1
 --- !u!4 &1251112193
 Transform:
   m_ObjectHideFlags: 0
@@ -1826,6 +1828,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 342355154}
     m_Modifications:
+    - target: {fileID: 8081766152243314512, guid: 6290b48f8b4d51a41b159f773e088cc3, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8081766152243314515, guid: 6290b48f8b4d51a41b159f773e088cc3, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
