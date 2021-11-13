@@ -23,6 +23,7 @@ namespace MatchMade
         public float velocity;
 
         // --- Controls
+        private PlayerInput playerInput;
         private InputActionMap controls;
         private InputAction movementInput;
 
@@ -46,6 +47,13 @@ namespace MatchMade
 
             SetupControls();
         }
+        public override void OnStartAuthority()
+        {
+            // Cache a reference and enable the PlayerInput component
+            // Clients don't register input using the new input system if we don't do this for some reason
+            playerInput = GetComponent<PlayerInput>();
+            playerInput.enabled = true;
+        }
 
         private void Update()
         {
@@ -58,15 +66,16 @@ namespace MatchMade
             // If we have input, request movement from the server
             if (inputDirection.magnitude > 0)
             {
-                CmdMove();
+                // CmdMove();
+                TargetMove(connectionToServer);
             }
         }
         [Command]
         public void CmdMove()
         {
-            TargetMove(netIdentity.connectionToClient);
+            // TargetMove(netIdentity.connectionToClient);
         }
-        [TargetRpc]
+        // [TargetRpc]
         public void TargetMove(NetworkConnection conn)
        {
             if (movementDirection.magnitude == 0)

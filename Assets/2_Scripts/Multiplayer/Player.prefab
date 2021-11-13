@@ -228,6 +228,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  isLocal: 0
+  networkId: 0
   moveSpeed: 3
   turnSpeed: 2
   angle: 0
