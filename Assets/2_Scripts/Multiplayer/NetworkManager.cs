@@ -11,8 +11,9 @@ public class NetworkManager : Mirror.NetworkManager
 {
     public static NetworkManager Instance;
 
-    public bool serverLogs = true;
-    public bool clientLogs = true;
+    [Header("Debug")]
+    [SerializeField] private bool clientLogs = true;
+    [SerializeField] private bool serverLogs = true;
 
     public override void Awake()
     {
@@ -42,8 +43,6 @@ public class NetworkManager : Mirror.NetworkManager
 
         if (serverLogs)
             Debug.Log($"<color=#33FF99>[Server]</color> Client connected. ID: {conn.connectionId}");
-
-        ServerManager.Instance.OnServerConnect(conn);
     }
     public override void OnServerDisconnect(NetworkConnection conn)
     {
@@ -53,24 +52,22 @@ public class NetworkManager : Mirror.NetworkManager
             Debug.Log($"<color=#33FF99>[Server]</color> Client disconnected. ID: {conn.connectionId}");
 
         NetworkServer.DestroyPlayerForConnection(conn);
-
-        ServerManager.Instance.OnServerDisconnect(conn);
     }
     // Called on the server when a client is ready & has loaded the scene - Client & Target RPCs NOT contained on the player object will work after this is called
     public override void OnServerReady(NetworkConnection conn)
     {
+        NetworkServer.SetClientReady(conn);
+
         GameObject player = Instantiate(playerPrefab);
         player.name = $"Player {conn.connectionId}";
 
         // Add player object for connection to the scene
         NetworkServer.AddPlayerForConnection(conn, player);
-        
+
         // --- > Client & Target RPCs contained on the player object will work from this point
 
         ServerManager.Instance.TargetOnClientReady(conn);
         UILobby.Instance.TargetUpdateDebugElements(conn, networkAddress);
-
-        ServerManager.Instance.OnServerReady(conn);
     }
     public override void OnServerError(NetworkConnection conn, Exception exception)
     {
@@ -94,6 +91,9 @@ public class NetworkManager : Mirror.NetworkManager
     {
         base.OnClientConnect(conn);
 
+        if (!NetworkClient.ready) 
+            NetworkClient.Ready();
+
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Connected to {networkAddress} as {mode}. Players: {NetworkServer.connections.Count}");
     }
@@ -104,9 +104,7 @@ public class NetworkManager : Mirror.NetworkManager
     }
     public override void OnClientSceneChanged(NetworkConnection conn)
     {
-        // We've loaded the online scene so set our client as ready to receive remote actions
-        if (!NetworkClient.ready) 
-            NetworkClient.Ready();
+
     }
     public override void OnClientError(Exception exception)
     {
@@ -143,4 +141,5 @@ public class NetworkManager : Mirror.NetworkManager
                 return;
         }
     }
+
 }

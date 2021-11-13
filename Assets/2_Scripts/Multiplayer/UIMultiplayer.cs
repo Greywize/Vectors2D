@@ -10,6 +10,10 @@ namespace MatchMade
     {
         public static UIMultiplayer Instance;
 
+        [SerializeField] TMPro.TMP_InputField nameInputField;
+        [SerializeField] Button joinLocalButton;
+        [SerializeField] Button hostLocalButton;
+
         public void Awake()
         {
             if (Instance != null)
@@ -17,9 +21,10 @@ namespace MatchMade
             Instance = this;
         }
 
-        [SerializeField] TMPro.TMP_InputField nameInputField;
-        [SerializeField] Button joinLocalButton;
-        [SerializeField] Button hostLocalButton;
+        public void Start()
+        {
+            EnableLocalButtons(true);
+        }   
 
         public void EnableLocalButtons(bool enabled)
         {

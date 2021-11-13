@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     // ---Vectors
     //[ReadOnly]
     public Vector2 m_inputDirection;
-    private Vector2 m_movementDirection;
+    public Vector2 m_movementDirection;
     //[ReadOnly]
     public Vector2 m_aimDirection;
 
@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
             if (angle == 180)
                 m_movementDirection = Quaternion.Euler(0, 0, 1) * m_movementDirection;
 
-            // Multiply turn speed by 360 so that 1 = one full rotation in a second
+            // Multiply turn speed by 360 so that 1 = one full rotation per second
             m_movementDirection = Rotate(m_movementDirection, m_inputDirection, turnSpeed);
             // Normalize m_direction
             m_movementDirection.Normalize();

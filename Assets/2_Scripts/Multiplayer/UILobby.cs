@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,12 +14,19 @@ namespace MatchMade
         [SerializeField] TMPro.TMP_Text addressText;
         [SerializeField] TMPro.TMP_Text clientsText;
         [SerializeField] TMPro.TMP_Text clientTypeText;
+        [SerializeField] TMPro.TMP_Text pingText;
 
         public void Awake()
         {
             if (Instance != null)
                 Destroy(this);
             Instance = this;
+        }
+
+        private void Update()
+        {
+            if (NetworkClient.isConnected)
+                pingText.text = $"Ping: {Math.Round(NetworkTime.rtt * 1000)}ms";
         }
 
         public void Disconnect()
