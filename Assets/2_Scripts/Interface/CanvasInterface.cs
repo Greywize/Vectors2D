@@ -22,7 +22,8 @@ namespace MatchMade
             // Show the target canvas
             target.Show();
             // Update the global current canvas
-            InterfaceManager.Instance.SetCurrent(target);
+            // if (InterfaceManager.Instance)
+            //    InterfaceManager.Instance.SetCurrent(target);
         }
         public void Show()
         {

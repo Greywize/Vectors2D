@@ -6,9 +6,9 @@ using Mirror;
 
 namespace MatchMade
 {
-    public class UILobby : NetworkBehaviour
+    public class UIOnline : NetworkBehaviour
     {
-        public static UILobby Instance;
+        public static UIOnline Instance;
 
         [Header("Debug UI Elements")]
         [SerializeField] TMPro.TMP_Text addressText;

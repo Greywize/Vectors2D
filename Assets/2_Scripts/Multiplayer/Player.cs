@@ -30,6 +30,13 @@ namespace MatchMade
         public Vector2 inputDirection;
         public Vector2 movementDirection;
 
+        public override void OnStartAuthority()
+        {
+            // Cache a reference and enable the PlayerInput component before anything else
+            // Clients don't register input using the new input system if we don't do this for some reason
+            playerInput = GetComponent<PlayerInput>();
+            playerInput.enabled = true;
+        }
         private void Awake()
         {
             // Set up components
@@ -37,26 +44,19 @@ namespace MatchMade
         }
         private void Start()
         {
-            isLocal = isLocalPlayer;
-            networkId = netId;
-
-            if (isLocalPlayer)
-                LocalPlayer = this;
-            else
+            // Return if this is not the local player
+            if (!isLocalPlayer)
                 return;
+
+            LocalPlayer = this;
+
+            GetComponent<SpriteRenderer>().color = Color.white;
 
             SetupControls();
         }
-        public override void OnStartAuthority()
+        private void FixedUpdate()
         {
-            // Cache a reference and enable the PlayerInput component
-            // Clients don't register input using the new input system if we don't do this for some reason
-            playerInput = GetComponent<PlayerInput>();
-            playerInput.enabled = true;
-        }
-
-        private void Update()
-        {
+            // Return if we've been disconnected or this is not our local player
             if (!NetworkClient.isConnected || !isLocalPlayer)
                 return;
 
@@ -66,16 +66,16 @@ namespace MatchMade
             // If we have input, request movement from the server
             if (inputDirection.magnitude > 0)
             {
-                // CmdMove();
-                TargetMove(connectionToServer);
+                CmdMove();
             }
         }
         [Command]
         public void CmdMove()
         {
-            // TargetMove(netIdentity.connectionToClient);
+            // Run movement Target Rpc for the client requesting movement
+            TargetMove(connectionToClient);
         }
-        // [TargetRpc]
+        [TargetRpc]
         public void TargetMove(NetworkConnection conn)
        {
             if (movementDirection.magnitude == 0)
@@ -104,7 +104,7 @@ namespace MatchMade
             // Move player
             rigidBody.AddForce(movementDirection * moveSpeed, ForceMode2D.Force);
         }
-        // Math functions
+        // Rotate function
         private Vector2 Rotate(Vector2 current, Vector2 target, float speed)
         {
             // Rotate towards target from current using speed multiplied by 360 so that 1 = one full rotation per second

@@ -12,13 +12,14 @@ public class NetworkManager : Mirror.NetworkManager
     public static NetworkManager Instance;
 
     [Header("Debug")]
-    [SerializeField] private bool clientLogs = true;
-    [SerializeField] private bool serverLogs = true;
+    public bool clientLogs = true;
+    public bool serverLogs = true;
 
     public override void Awake()
     {
         base.Awake();
 
+        // Set up static instance so we can access this anywhere
         if (Instance != null)
             Destroy(this);
         Instance = this;
@@ -67,7 +68,7 @@ public class NetworkManager : Mirror.NetworkManager
         // --- > Client & Target RPCs contained on the player object will work from this point
 
         ServerManager.Instance.TargetOnClientReady(conn);
-        UILobby.Instance.TargetUpdateDebugElements(conn, networkAddress);
+        UIOnline.Instance.TargetUpdateDebugElements(conn, networkAddress);
     }
     public override void OnServerError(NetworkConnection conn, Exception exception)
     {
@@ -101,10 +102,19 @@ public class NetworkManager : Mirror.NetworkManager
     {
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Disconnected.");
-    }
-    public override void OnClientSceneChanged(NetworkConnection conn)
-    {
 
+        StopClient();
+
+        // If we've subscribed to this event, it means we tried to join a server.
+        // We didn't find one, so we're hosting instead.
+        InterfaceManager.Instance.autoHost?.Invoke();
+
+        // If we've subscribed to this event and OnClientDisconnect
+        // was called, we failed to connect to a server
+        InterfaceManager.Instance.onFailedToConnect?.Invoke();
+
+        // Unsubscribe as we might not want to host next time
+        InterfaceManager.Instance.autoHost = null;
     }
     public override void OnClientError(Exception exception)
     {
@@ -141,5 +151,4 @@ public class NetworkManager : Mirror.NetworkManager
                 return;
         }
     }
-
 }
