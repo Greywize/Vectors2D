@@ -12,23 +12,24 @@ namespace MatchMade
     public class Player : NetworkBehaviour
     {
         public static Player LocalPlayer;
-        [SerializeField] bool isLocal;
-        [SerializeField] uint networkId;
 
         Rigidbody2D rigidBody;
+        SpriteRenderer spriteRenderer;
 
-        public float moveSpeed;
-        public float turnSpeed;
-        public float angle;
-        public float velocity;
+        string playername;
+
+        [SerializeField] float moveSpeed;
+        [SerializeField] float turnSpeed;
+        [SerializeField] float angle;
+        [SerializeField] float velocity;
 
         // --- Controls
-        private PlayerInput playerInput;
-        private InputActionMap controls;
-        private InputAction movementInput;
+        PlayerInput playerInput;
+        InputActionMap controls;
+        InputAction movementInput;
 
-        public Vector2 inputDirection;
-        public Vector2 movementDirection;
+        Vector2 inputDirection;
+        Vector2 movementDirection;
 
         public override void OnStartAuthority()
         {
@@ -41,6 +42,10 @@ namespace MatchMade
         {
             // Set up components
             rigidBody = GetComponent<Rigidbody2D>();
+
+            spriteRenderer = GetComponent<SpriteRenderer>(); 
+            if (spriteRenderer)
+                spriteRenderer.color = Color.white;
         }
         private void Start()
         {
@@ -50,8 +55,6 @@ namespace MatchMade
 
             LocalPlayer = this;
 
-            GetComponent<SpriteRenderer>().color = Color.white;
-
             SetupControls();
         }
         private void FixedUpdate()
@@ -59,6 +62,7 @@ namespace MatchMade
             // Return if we've been disconnected or this is not our local player
             if (!NetworkClient.isConnected || !isLocalPlayer)
                 return;
+
 
             // Get movement vector from input
             inputDirection = movementInput.ReadValue<Vector2>();
@@ -69,15 +73,20 @@ namespace MatchMade
                 CmdMove();
             }
         }
+
+        #region Commands
         [Command]
         public void CmdMove()
         {
             // Run movement Target Rpc for the client requesting movement
             TargetMove(connectionToClient);
         }
+        #endregion
+
+        #region Client RPCs
         [TargetRpc]
         public void TargetMove(NetworkConnection conn)
-       {
+        {
             if (movementDirection.magnitude == 0)
                 movementDirection = transform.up;
             // Debug line to indicate input direction
@@ -104,12 +113,13 @@ namespace MatchMade
             // Move player
             rigidBody.AddForce(movementDirection * moveSpeed, ForceMode2D.Force);
         }
+        #endregion
+
         // Rotate function
         private Vector2 Rotate(Vector2 current, Vector2 target, float speed)
         {
-            // Rotate towards target from current using speed multiplied by 360 so that 1 = one full rotation per second
             // Convert the result to radians and multiply by deltaTime;
-            return Vector3.RotateTowards(current, target, (speed * 360) * Mathf.Deg2Rad * Time.deltaTime, 0.0f);
+            return Vector3.RotateTowards(current, target, (speed * 1000) * Mathf.Deg2Rad * Time.deltaTime, 0.0f);
         }
         private void SetupControls()
         {

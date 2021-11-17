@@ -4,6 +4,8 @@ using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using TMPro;
+using static TweenController;
 
 namespace MatchMade
 {
@@ -13,25 +15,13 @@ namespace MatchMade
     {
         public static InterfaceManager Instance;
 
-        public delegate void AutoHostEvent();
-        public AutoHostEvent autoHost;
-        public delegate void DisconnectEvent();
-        public DisconnectEvent onFailedToConnect;
-        public UnityEvent hostInternal;
-
         public bool dontDestroyOnLoad = false;
 
-        // CanvasInterface current;
+        [Header("Transition")]
+        [SerializeField] TweenController transitionTween;
+        [SerializeField] TMP_Text transitionMessageText;
 
-        // [SerializeField] CanvasInterface main;
-        [SerializeField] TMPro.TMP_InputField addressField;
-        [SerializeField] TMPro.TMP_Text addressErrorText;
-        [SerializeField] Button playButton;
-        [SerializeField] Button joinLocalButton;
-        [SerializeField] Button hostLocalButton;
-        [SerializeField] GameObject connectingIndicator;
-
-        public TweenController tweenController;
+        CanvasInterface current;
 
         private void Awake()
         {
@@ -47,13 +37,12 @@ namespace MatchMade
         }
         private void Start()
         {
-            if (NetworkManager.Instance == null)
-                Debug.Log("No NetworkManager found in scene.");
-
-            // current = FindFirstActive();
+            current = FindFirstActive();
         }
+
+        #region Transitioning
         // Returns the first active canvas found amongst all CanvasInterfaces 
-        /*public CanvasInterface FindFirstActive()
+        public CanvasInterface FindFirstActive()
         {
             foreach (CanvasInterface canvasInterface in FindObjectsOfType<CanvasInterface>())
             {
@@ -70,113 +59,37 @@ namespace MatchMade
         public void SetCurrent(CanvasInterface newCurrent)
         {
             current = newCurrent;
-        }*/
-        public void EnableLocalButtons(bool enabled)
-        {
-            playButton.interactable = enabled;
-            joinLocalButton.interactable = enabled;
-            hostLocalButton.interactable = enabled;
         }
-        public void AddressError(string error)
+        public TweenStage FadeOut()
         {
-            addressErrorText.SetText(error);
+            transitionTween.StartStage(0);
+
+            return transitionTween.stages[0];
         }
+        public TweenStage FadeIn()
+        {
+            transitionTween.StartStage(1);
+
+            return transitionTween.stages[1];
+        }
+        public TweenStage FadeHalf()
+        {
+            transitionTween.StartStage(2);
+
+            return transitionTween.stages[2];
+        }
+        public void SetTransitionMessage(string message)
+        {
+            transitionMessageText.text = message;
+        }
+        #endregion
+
         #region Buttons 
-        public void Play()
-        {
-            if (string.IsNullOrWhiteSpace(addressField.text))
-            {
-                AddressError("Invalid Address");
-                return;
-            }
-            else
-            {
-                // Clear error message
-                if (addressErrorText.text != "")
-                    AddressError("");
-
-                tweenController.StartStage(2);
-                connectingIndicator.SetActive(true);
-                EnableLocalButtons(false);
-
-                // Subscribe Host function to our AutoHost event in case we fail to join
-                autoHost += Host;
-
-                NetworkManager.Instance.networkAddress = addressField.text;
-
-                // Attempt to join master server
-                NetworkManager.Instance.StartClient();
-            }
-        }
-        public void Host()
-        {
-            if (string.IsNullOrWhiteSpace(addressField.text))
-            {
-                AddressError("Invalid Address");
-                return;
-            }
-            else
-            {
-                AddressError("");
-            }
-
-            // Clear error message
-            if (addressErrorText.text != "")
-                AddressError("");
-
-            EnableLocalButtons(false);
-
-            tweenController.StartStage(1);
-            tweenController.stages[1].onComplete.AddListener(() =>
-            {
-                NetworkManager.Instance.networkAddress = addressField.text;
-                try
-                {
-                    NetworkManager.Instance.StartHost();
-                }
-                catch (SocketException exception)
-                {
-                    EnableLocalButtons(true);
-
-                    tweenController.StartStage(0);
-                    AddressError($"Address {NetworkManager.Instance.networkAddress} already has a server");
-                }
-            });
-        }
-        public void Join()
-        {
-            if (string.IsNullOrWhiteSpace(addressField.text))
-            {
-                AddressError("Invalid Address");
-                return;
-            }
-            else
-            {
-                AddressError("");
-            }
-
-            tweenController.StartStage(2);
-            connectingIndicator.SetActive(true);
-            EnableLocalButtons(false);
-
-            // Set up onFailedToConnect event
-            // Called in OnClientDiscconet in the NetworkManager
-            onFailedToConnect += () => 
-            { 
-                AddressError("Failed to connect");
-                connectingIndicator.SetActive(false);
-                tweenController.StartStage(0);
-                EnableLocalButtons(true);
-            };
-
-            NetworkManager.Instance.networkAddress = addressField.text;
-            NetworkManager.Instance.StartClient();
-        }
         public void Disconnect()
         {
             NetworkManager.Instance.Disconnect();
         }
-        public void QuitApplication()
+        public void Quit()
         {
             Application.Quit();
         }

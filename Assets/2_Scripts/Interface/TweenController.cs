@@ -87,12 +87,12 @@ public class TweenController : MonoBehaviour
         return tween;
     }
 
-    public void StartStage(int stage)
+    public TweenStage StartStage(int stage)
     {
         if (stage > stages.Count + 1 || stages.Count == 0)
         {
             Debug.LogWarning($"Tween stage {stage} doesn't exist on {gameObject.name}");
-            return;
+            return stages[stage];
         }
 
         LeanTween.cancel(gameObject);
@@ -109,12 +109,14 @@ public class TweenController : MonoBehaviour
             if (tween.time == 0)
             {
                 Debug.Log($"A tween on {gameObject.name} has a time of zero, which won't do anything.");
-                return;
+
+                return stages[stage];
             }
             if (tween.ease == LeanTweenType.notUsed)
             {
                 Debug.LogWarning($"A tween on {gameObject.name} has an ease type of NotUsed which won't do anything.");
-                return;
+
+                return stages[stage];
             }
 
             // Call the correct tween funciton
@@ -143,6 +145,8 @@ public class TweenController : MonoBehaviour
                     break;
             }
         }
+
+        return stages[stage];
     }
     // For when we want to loop all stages
     private void TweenNextStage(int stage)

@@ -67,8 +67,7 @@ public class NetworkManager : Mirror.NetworkManager
 
         // --- > Client & Target RPCs contained on the player object will work from this point
 
-        ServerManager.Instance.TargetOnClientReady(conn);
-        UIOnline.Instance.TargetUpdateDebugElements(conn, networkAddress);
+        ServerManager.Instance.TargetUpdateDebugInformation(conn);
     }
     public override void OnServerError(NetworkConnection conn, Exception exception)
     {
@@ -96,7 +95,7 @@ public class NetworkManager : Mirror.NetworkManager
             NetworkClient.Ready();
 
         if (clientLogs)
-            Debug.Log($"<color=#4CC4FF>[Client]</color> Connected to {networkAddress} as {mode}. Players: {NetworkServer.connections.Count}");
+            Debug.Log($"<color=#4CC4FF>[Client]</color> Connected to {networkAddress} as {mode}.");
     }
     public override void OnClientDisconnect(NetworkConnection conn)
     {
@@ -104,17 +103,6 @@ public class NetworkManager : Mirror.NetworkManager
             Debug.Log($"<color=#4CC4FF>[Client]</color> Disconnected.");
 
         StopClient();
-
-        // If we've subscribed to this event, it means we tried to join a server.
-        // We didn't find one, so we're hosting instead.
-        InterfaceManager.Instance.autoHost?.Invoke();
-
-        // If we've subscribed to this event and OnClientDisconnect
-        // was called, we failed to connect to a server
-        InterfaceManager.Instance.onFailedToConnect?.Invoke();
-
-        // Unsubscribe as we might not want to host next time
-        InterfaceManager.Instance.autoHost = null;
     }
     public override void OnClientError(Exception exception)
     {

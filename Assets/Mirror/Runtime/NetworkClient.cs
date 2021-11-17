@@ -997,7 +997,7 @@ namespace Mirror
                 Debug.LogError("AddPlayer requires a valid NetworkClient.connection.");
                 return false;
             }
-            
+
             // UNET checked 'if readyConnection != null'.
             // in other words, we need a connection and we need to be ready.
             if (!ready)

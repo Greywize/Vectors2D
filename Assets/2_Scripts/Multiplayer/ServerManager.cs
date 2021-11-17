@@ -30,8 +30,9 @@ namespace MatchMade
 
         // Called on the client when it first joins
         [TargetRpc]
-        public void TargetOnClientReady(NetworkConnection conn)
+        public void TargetUpdateDebugInformation(NetworkConnection conn)
         {
+            UIOnline.Instance.UpdateDebugElements();
             UIOnline.Instance.UpdateClientType();
         }
         // Connections Count SyncVar hook

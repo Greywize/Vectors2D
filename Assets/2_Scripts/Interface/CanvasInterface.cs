@@ -10,6 +10,8 @@ namespace MatchMade
     {
         Canvas canvas;
 
+        [SerializeField] bool canNavigate = true;
+
         private void Awake()
         {
             canvas = GetComponent<Canvas>();
@@ -17,13 +19,19 @@ namespace MatchMade
 
         public void Navigate(CanvasInterface target)
         {
+            if (!target.canNavigate)
+            {
+                Debug.Log($"{target} interface has disabled navigating.");
+                return;
+            }
+
             // Hide this canvas
             Hide();
             // Show the target canvas
             target.Show();
             // Update the global current canvas
-            // if (InterfaceManager.Instance)
-            //    InterfaceManager.Instance.SetCurrent(target);
+            if (InterfaceManager.Instance)
+               InterfaceManager.Instance.SetCurrent(target);
         }
         public void Show()
         {
@@ -34,7 +42,8 @@ namespace MatchMade
         public void Hide()
         {
             // Disable canvas
-            canvas.enabled = false;
+            if (canvas.enabled)
+                canvas.enabled = false;
         }
     }
 }

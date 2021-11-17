@@ -33,10 +33,9 @@ namespace MatchMade
         {
             NetworkManager.Instance.Disconnect();
         }
-        [TargetRpc]
-        public void TargetUpdateDebugElements(NetworkConnection conn, string address)
+        public void UpdateDebugElements()
         {
-            addressText.text = address;
+            addressText.text = NetworkManager.Instance.networkAddress;
         }
         public void UpdateClientType()
         {
