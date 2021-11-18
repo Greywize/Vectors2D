@@ -44,14 +44,15 @@ namespace MatchMade
             rigidBody = GetComponent<Rigidbody2D>();
 
             spriteRenderer = GetComponent<SpriteRenderer>(); 
-            if (spriteRenderer)
-                spriteRenderer.color = Color.white;
         }
         private void Start()
         {
             // Return if this is not the local player
             if (!isLocalPlayer)
                 return;
+
+            if (spriteRenderer)
+                spriteRenderer.color = Color.white;
 
             LocalPlayer = this;
 

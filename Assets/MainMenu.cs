@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class MainMenu : MonoBehaviour
 {
     [Header("UI Elements")]
+    [SerializeField] TweenController tweenController;
     [SerializeField] TMP_InputField nameField;
 
     InputActionMap controls;
@@ -34,19 +35,21 @@ public class MainMenu : MonoBehaviour
     {
         if (validating)
             return;
-        validating = true;
 
         if (string.IsNullOrWhiteSpace(nameField.text))
         {
             return;
         }
 
+        tweenController.StartStage(0);
         InterfaceManager.Instance.FadeHalf().onComplete.AddListener(() =>
         {
             InterfaceManager.Instance.SetTransitionMessage("Connecting");
 
             NetworkDiscovery.Instance.StartDiscovery();
         });
+
+        validating = true;
     }
     void Connect()
     {
@@ -56,17 +59,19 @@ public class MainMenu : MonoBehaviour
     {
         if (!validating)
             return;
-        validating = false;
 
+        tweenController.StartStage(1);
         NetworkDiscovery.Instance.StopDiscovery();
         InterfaceManager.Instance.SetTransitionMessage("");
 
         InterfaceManager.Instance.FadeIn();
+
+        validating = false;
     }
     void SetupControls()
     {
         // --- Set up action map
-        controls = GetComponent<PlayerInput>().actions.FindActionMap("Player");
+        controls = GetComponent<PlayerInput>().actions.FindActionMap("UI");
         controls.Enable();
         confirm = controls.FindAction("Confirm");
         confirm.Enable();
