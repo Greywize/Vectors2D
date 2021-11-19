@@ -116,7 +116,7 @@
             "actions": [
                 {
                     "name": "Navigate",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "2979523c-e724-4022-903d-684e55949e0c",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -463,7 +463,7 @@
                 {
                     "name": "",
                     "id": "8046d821-5afb-40af-bd44-74453817ba79",
-                    "path": "*/{Submit}",
+                    "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -474,7 +474,7 @@
                 {
                     "name": "",
                     "id": "0f314a10-53fc-48ce-a026-79580e830769",
-                    "path": "*/{Cancel}",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

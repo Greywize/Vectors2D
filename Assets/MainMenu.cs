@@ -7,14 +7,19 @@ using UnityEngine.InputSystem;
 
 public class MainMenu : MonoBehaviour
 {
-    [Header("UI Elements")]
-    [SerializeField] TweenController tweenController;
-    [SerializeField] TMP_InputField nameField;
+    CanvasInterface canvasInterface;
 
+    [SerializeField] PlayerInput playerInput;
     InputActionMap controls;
 
     InputAction confirm;
     InputAction cancel;
+
+    [Header("UI Elements")]
+    [SerializeField] TweenController mainTweenController;
+    [SerializeField] TweenController loadingTweenController;
+    [SerializeField] TweenController loadingBarTweenController;
+    [SerializeField] TMP_InputField nameField;
 
     bool validating = false;
 
@@ -30,7 +35,10 @@ public class MainMenu : MonoBehaviour
         confirm.performed -= ctx => ValidateAndConnect();
         cancel.performed -= ctx => Cancel();
     }
-
+    private void Awake()
+    {
+        canvasInterface = GetComponent<CanvasInterface>();   
+    }
     public void ValidateAndConnect()
     {
         if (validating)
@@ -41,37 +49,51 @@ public class MainMenu : MonoBehaviour
             return;
         }
 
-        tweenController.StartStage(0);
-        InterfaceManager.Instance.FadeHalf().onComplete.AddListener(() =>
-        {
-            InterfaceManager.Instance.SetTransitionMessage("Connecting");
+        StopAllCoroutines();
 
+        InterfaceManager.Instance.SetTransitionMessage("Connecting");
+
+        loadingTweenController.BeginStage(1);
+        loadingBarTweenController.BeginStage(0);
+        mainTweenController.BeginStage(0).onComplete.AddListener(() =>
+        {
             NetworkDiscovery.Instance.StartDiscovery();
+            StartCoroutine(TimeOutTimer());
         });
 
         validating = true;
     }
-    void Connect()
+    private IEnumerator TimeOutTimer()
     {
-        NetworkManager.Instance.StartClient();
+        yield return new WaitForSeconds(10);
+        InterfaceManager.Instance.SetTransitionMessage("Failed to connect :<");
+        loadingBarTweenController.BeginStage(1);
+        yield return new WaitForSeconds(1);
+        Cancel();
     }
     void Cancel()
     {
         if (!validating)
             return;
 
-        tweenController.StartStage(1);
-        NetworkDiscovery.Instance.StopDiscovery();
-        InterfaceManager.Instance.SetTransitionMessage("");
+        StopCoroutine(TimeOutTimer());
 
-        InterfaceManager.Instance.FadeIn();
+        mainTweenController.BeginStage(1);
+        loadingTweenController.BeginStage(0);
+        NetworkDiscovery.Instance.StopDiscovery();
 
         validating = false;
+    }
+    void Connect()
+    {
+        StopCoroutine(TimeOutTimer());
+
+        NetworkManager.Instance.StartClient();
     }
     void SetupControls()
     {
         // --- Set up action map
-        controls = GetComponent<PlayerInput>().actions.FindActionMap("UI");
+        controls = playerInput.actions.FindActionMap("UI");
         controls.Enable();
         confirm = controls.FindAction("Confirm");
         confirm.Enable();

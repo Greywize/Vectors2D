@@ -33,7 +33,7 @@ namespace MatchMade
             if (dontDestroyOnLoad)
                 DontDestroyOnLoad(gameObject);
 
-            Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
+            Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
         }
         private void Start()
         {
@@ -62,19 +62,19 @@ namespace MatchMade
         }
         public TweenStage FadeOut()
         {
-            transitionTween.StartStage(0);
+            transitionTween.BeginStage(0);
 
             return transitionTween.stages[0];
         }
         public TweenStage FadeIn()
         {
-            transitionTween.StartStage(1);
+            transitionTween.BeginStage(1);
 
             return transitionTween.stages[1];
         }
         public TweenStage FadeHalf()
         {
-            transitionTween.StartStage(2);
+            transitionTween.BeginStage(2);
 
             return transitionTween.stages[2];
         }

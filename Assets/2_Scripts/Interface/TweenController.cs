@@ -38,7 +38,7 @@ public class TweenController : MonoBehaviour
     private void Start()
     {
         if (beginOnStart)
-            StartStage(startStage);
+            BeginStage(startStage);
     }
 
     public Tween StartTween(Tween tween)
@@ -87,7 +87,7 @@ public class TweenController : MonoBehaviour
         return tween;
     }
 
-    public TweenStage StartStage(int stage)
+    public TweenStage BeginStage(int stage)
     {
         if (stage > stages.Count + 1 || stages.Count == 0)
         {
@@ -153,7 +153,7 @@ public class TweenController : MonoBehaviour
     {
         if (stage >= stages.Count)
             stage = 0;
-        StartStage(stage);
+        BeginStage(stage);
     }
     private void TweenAlpha(Tween tween)
     {
@@ -308,7 +308,7 @@ public class TweenController : MonoBehaviour
         {
             currentStage++;
             if (currentStage < stages.Count)
-                StartStage(currentStage);
+                BeginStage(currentStage);
         }
 
         stages[stage].onComplete?.Invoke();

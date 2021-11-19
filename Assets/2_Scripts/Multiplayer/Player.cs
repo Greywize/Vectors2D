@@ -20,8 +20,8 @@ namespace MatchMade
 
         [SerializeField] float moveSpeed;
         [SerializeField] float turnSpeed;
-        [SerializeField] float angle;
-        [SerializeField] float velocity;
+        float angle;
+        float velocity;
 
         // --- Controls
         PlayerInput playerInput;
@@ -63,7 +63,6 @@ namespace MatchMade
             // Return if we've been disconnected or this is not our local player
             if (!NetworkClient.isConnected || !isLocalPlayer)
                 return;
-
 
             // Get movement vector from input
             inputDirection = movementInput.ReadValue<Vector2>();
@@ -120,7 +119,7 @@ namespace MatchMade
         private Vector2 Rotate(Vector2 current, Vector2 target, float speed)
         {
             // Convert the result to radians and multiply by deltaTime;
-            return Vector3.RotateTowards(current, target, (speed * 1000) * Mathf.Deg2Rad * Time.deltaTime, 0.0f);
+            return Vector3.RotateTowards(current, target, speed * Mathf.Deg2Rad, 0.0f);
         }
         private void SetupControls()
         {
