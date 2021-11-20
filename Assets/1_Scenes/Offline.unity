@@ -1918,7 +1918,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2325935565342540947, guid: 4d0e90291fcd63a4993ad253b32237e7, type: 3}
       propertyPath: m_Text
-      value: 
+      value: Greywize
       objectReference: {fileID: 0}
     - target: {fileID: 2522139557329445252, guid: 4d0e90291fcd63a4993ad253b32237e7, type: 3}
       propertyPath: m_Name
@@ -1938,7 +1938,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2733358009022735258, guid: 4d0e90291fcd63a4993ad253b32237e7, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2733358009022735258, guid: 4d0e90291fcd63a4993ad253b32237e7, type: 3}
       propertyPath: m_fontStyle

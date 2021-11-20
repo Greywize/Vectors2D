@@ -41,7 +41,9 @@ public class MainMenu : MonoBehaviour
     }
     public void ValidateAndConnect()
     {
-        if (validating)
+        NetworkManager.Instance.StartHost();
+
+        /*if (validating)
             return;
 
         if (string.IsNullOrWhiteSpace(nameField.text))
@@ -61,7 +63,7 @@ public class MainMenu : MonoBehaviour
             StartCoroutine(TimeOutTimer());
         });
 
-        validating = true;
+        validating = true;*/
     }
     private IEnumerator TimeOutTimer()
     {
