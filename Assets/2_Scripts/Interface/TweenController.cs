@@ -170,14 +170,9 @@ public class TweenController : MonoBehaviour
         if (!canvas)
         {
             canvas = GetComponent<Canvas>();
-            if (canvas == null)
-            {
-                Debug.LogWarning($"A Canvas is required to tween alpha, but it was missing on {gameObject.name}.");
-                return;
-            }
+            if (canvas && !canvas.enabled)
+                canvas.enabled = true;
         }
-        if (!canvas.enabled)
-            canvas.enabled = true;
         LeanTween.alphaCanvas(canvasGroup, tween.alpha, tween.time)
                     .setDelay(tween.delay)
                     .setEase(tween.ease)

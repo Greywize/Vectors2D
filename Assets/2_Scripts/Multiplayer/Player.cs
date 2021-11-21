@@ -13,10 +13,12 @@ namespace MatchMade
     {
         public static Player LocalPlayer;
 
+        public bool CanControl { get; set; }
+
         Rigidbody2D rigidBody;
         SpriteRenderer spriteRenderer;
 
-        string playername;
+        public string playerName;
 
         [SerializeField] float moveSpeed;
         [SerializeField] float turnSpeed;
@@ -49,19 +51,26 @@ namespace MatchMade
         {
             // Return if this is not the local player
             if (!isLocalPlayer)
+            {
+                playerName = "Player";
                 return;
+            }
+
+            LocalPlayer = this;
+            playerName = "Local Player";
+
+            // In case it wasn't already
+            CanControl = true;
 
             if (spriteRenderer)
                 spriteRenderer.color = Color.white;
-
-            LocalPlayer = this;
 
             SetupControls();
         }
         private void FixedUpdate()
         {
             // Return if we've been disconnected or this is not our local player
-            if (!NetworkClient.isConnected || !isLocalPlayer)
+            if (!NetworkClient.isConnected || !isLocalPlayer || !CanControl)
                 return;
 
             // Get movement vector from input
