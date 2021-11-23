@@ -6,10 +6,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace MatchMade
 {
-    [RequireComponent(typeof(TMP_InputField))]
     public class Chat : NetworkBehaviour
     {
         public static Chat Instance;
@@ -18,22 +18,24 @@ namespace MatchMade
 
         ChatMode mode = ChatMode.Idle;
 
-        [SerializeField] int visibleMessageLimit = 5;
+        [SerializeField] int maxMessageCount = 5;
         [SerializeField] int characterLimit = 50;
         [SerializeField] float messageVisibilityTime = 10f;
         [SerializeField] float fadeOutTime = 1.5f;
         [SerializeField] bool unselectOnMessageSent = false;
 
         [Header("Chat")]
+        [Tooltip("Input field for the chat bar.")]
+        [SerializeField] TMP_InputField chatField;
         [Tooltip("Prefab that is used as a base for chat messages.")]
         [SerializeField] GameObject messagePrefab;
-        [Tooltip("The transform used as a parent for the text objects instantiated.")]
+        [Tooltip("The transform used as a parent for the text objects.")]
         [SerializeField] Transform messageStackTransform;
+        [SerializeField] ScrollRect scrollView;
 
-        TMP_InputField inputField;
-        TMP_Text placeholder;
+        RectTransform messageStackRectTransform;
 
-        [Header("Control")]
+        [Header("Controls")]
         public InputAction enableChat;
         public InputAction cancel;
 
@@ -41,7 +43,10 @@ namespace MatchMade
         public UnityEvent OnMessageSent;
         public UnityEvent OnMessageReceived;
 
-        [SerializeField] List<GameObject> messages = new List<GameObject>();
+        TMP_Text placeholder;
+        string placeHolderText;
+
+        List<UIMessage> messages = new List<UIMessage>();
 
         private void Awake()
         {
@@ -50,16 +55,20 @@ namespace MatchMade
             cancel.started += ctx => UnfocusChat();
             cancel.Enable();
 
-            inputField = GetComponent<TMP_InputField>();
-            placeholder = inputField.placeholder.GetComponent<TMP_Text>();
+            placeholder = chatField.placeholder.GetComponent<TMP_Text>();
 
-            inputField.characterLimit = characterLimit;
+            chatField.characterLimit = characterLimit;
+            chatField.onDeselect.AddListener(delegate { UnfocusChat(); });
         }
         private void Start()
         {
             if (Instance != null)
                 Destroy(this);
             Instance = this;
+
+            placeHolderText = placeholder.text;
+
+            messageStackRectTransform = messageStackTransform.GetComponent<RectTransform>();
         }
         public void HandleChat()
         {
@@ -75,13 +84,13 @@ namespace MatchMade
                     FocusChat();
                     break;
                 case ChatMode.Active:
-                    if (string.IsNullOrWhiteSpace(inputField.text))
+                    if (string.IsNullOrWhiteSpace(chatField.text))
                     {
                         UnfocusChat();
                         break;
                     }
 
-                    CmdSendChatMessage(inputField.text);
+                    Player.LocalPlayer.CmdSendChatMessage(Player.LocalPlayer.playerName, chatField.text);
 
                     if (unselectOnMessageSent)
                     {
@@ -89,79 +98,103 @@ namespace MatchMade
                     }
                     else
                     {
-                        inputField.text = "";
-                        inputField.ActivateInputField();
-                        inputField.Select();
+                        chatField.text = "";
+                        chatField.ActivateInputField();
+                        chatField.Select();
                     }
                     break;
             }
         }
-        [Command(requiresAuthority = false)]
-        public void CmdSendChatMessage(string message)
-        {
-            RpcRecieveMessage(message);
-        }
         [ClientRpc]
-        public void RpcRecieveMessage(string message)
+        public void RpcRecieveMessage(string senderName, string message)
         {
             GameObject messageObject = Instantiate(messagePrefab, messageStackTransform);
+            string prefix = $"[{senderName}] ";
+            messageObject.GetComponentInChildren<TMP_Text>().text = prefix + message;
 
-            messageObject.GetComponentInChildren<TMP_Text>().text = message;
+            messageObject.name = $"Message {prefix}";
 
-            if (messages.Count > visibleMessageLimit)
+            UIMessage messageUI = messageObject.GetComponent<UIMessage>();
+
+            if (messages.Count >= maxMessageCount)
             {
-                GameObject temp = messages[messages.Count - 1];
+                UIMessage temp = messages[messages.Count - 1];
                 messages.RemoveAt(messages.Count - 1);
+                Destroy(temp.gameObject);
 
-                Destroy(temp);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(messageStackRectTransform);
             }
-            messages.Insert(0, messageObject);
-            StartCoroutine(TimeOutMessage(messageObject));
+
+            messages.Insert(0, messageUI);
+            StartCoroutine(StartMessageFade(messageObject));
+            
+            LayoutRebuilder.ForceRebuildLayoutImmediate(messageStackRectTransform);
         }
         public void FocusChat()
         {
-            inputField.interactable = true;
-
-            inputField.ActivateInputField();
-            inputField.Select();
+            // Chat bar
+            chatField.interactable = true;
+            chatField.ActivateInputField();
+            chatField.Select();
             placeholder.text = "";
 
-            mode = ChatMode.Active;
+            // Scroll view
+            scrollView.enabled = true;
 
+            mode = ChatMode.Active;
             Player.LocalPlayer.CanControl = false;
+
+            foreach (UIMessage message in messages)
+            {
+                message.tweenController.StopAllTweens();
+                message.GetComponent<CanvasGroup>().alpha = 1;
+            }
         }
         public void UnfocusChat()
         {
-            inputField.text = "";
-            // ToDo - Store the initial place holder text and re-use that instead of hard-coding it
-            placeholder.text = "Press [Enter] to chat";
-            inputField.DeactivateInputField();
-
-            inputField.interactable = false;
+            // Chat bar
+            placeholder.text = placeHolderText;
+            chatField.text = "";
+            StartCoroutine(DeselectChat());
+            // Scroll view
+            scrollView.enabled = false;
+            messageStackRectTransform.LeanSetLocalPosY(0);
 
             mode = ChatMode.Idle;
+            Player.LocalPlayer.CanControl = true; 
 
-            Player.LocalPlayer.CanControl = true;
-        }
-        IEnumerator TimeOutMessage(GameObject message)
-        {
-            yield return new WaitForSeconds(messageVisibilityTime);
-
-            // First check if it's still there
-            if (message)
+            foreach (UIMessage message in messages)
             {
-                TweenController controller = message.GetComponent<TweenController>();
+                if (message.Faded)
+                    message.GetComponent<CanvasGroup>().alpha = 0;
+            }
+        }
+        IEnumerator DeselectChat()
+        {
+            yield return new WaitForEndOfFrame();
 
-                controller.stages[0].tweens[0].time = fadeOutTime;
-                controller.BeginStage(0).onComplete.AddListener(() =>
+            // This needs to happen at the end of the frame
+            chatField.interactable = false;
+        }
+        IEnumerator StartMessageFade(GameObject message)
+        {
+            yield return new WaitForSeconds(messageVisibilityTime - fadeOutTime);
+
+            UIMessage messageUI = message.GetComponent<UIMessage>();
+
+            if (messageUI)
+            {
+                // IF the chat bar isn't open, fade out
+                if (mode != ChatMode.Active)
                 {
-                    // Check again as we could have deleted it by reaching the visible message limit by now
-                    if (message)
-                    {
-                        messages.Remove(message);
-                        Destroy(message);
-                    }
-                });
+                    messageUI.Faded = true;
+                    messageUI.FadeOut();
+                }
+                // If it is open, skip the fade
+                else
+                {
+                    messageUI.Faded = true;
+                }
             }
         }
     }

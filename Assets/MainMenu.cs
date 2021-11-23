@@ -49,6 +49,8 @@ public class MainMenu : MonoBehaviour
             return;
         }
 
+        NetworkManager.Instance.playerName = nameField.text;
+
         StopAllCoroutines();
 
         InterfaceManager.Instance.SetTransitionMessage("Connecting");

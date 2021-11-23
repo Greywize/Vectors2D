@@ -308,4 +308,8 @@ public class TweenController : MonoBehaviour
 
         stages[stage].onComplete?.Invoke();
     }
+    public void StopAllTweens()
+    {
+        LeanTween.cancel(gameObject);
+    }
 }

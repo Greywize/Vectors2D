@@ -692,6 +692,7 @@ MonoBehaviour:
   autoCreatePlayer: 0
   playerSpawnMethod: 0
   spawnPrefabs: []
+  playerName: 
   clientLogs: 0
   serverLogs: 1
 --- !u!4 &946825522

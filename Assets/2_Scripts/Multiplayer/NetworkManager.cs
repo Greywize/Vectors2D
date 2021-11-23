@@ -11,6 +11,8 @@ public class NetworkManager : Mirror.NetworkManager
 {
     public static NetworkManager Instance;
 
+    public string playerName;
+
     [Header("Debug")]
     public bool clientLogs = true;
     public bool serverLogs = true;

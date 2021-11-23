@@ -51,13 +51,10 @@ namespace MatchMade
         {
             // Return if this is not the local player
             if (!isLocalPlayer)
-            {
-                playerName = "Player";
                 return;
-            }
 
             LocalPlayer = this;
-            playerName = "Local Player";
+            playerName = NetworkManager.Instance.playerName;
 
             // In case it wasn't already
             CanControl = true;
@@ -89,6 +86,11 @@ namespace MatchMade
         {
             // Run movement Target Rpc for the client requesting movement
             TargetMove(connectionToClient);
+        }
+        [Command]
+        public void CmdSendChatMessage(string senderName, string message)
+        {
+            Chat.Instance.RpcRecieveMessage(senderName, message);
         }
         #endregion
 
