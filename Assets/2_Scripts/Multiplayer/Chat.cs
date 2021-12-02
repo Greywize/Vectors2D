@@ -50,31 +50,37 @@ namespace MatchMade
 
         private void Awake()
         {
+            // Add chat function to input delegate and enable it
             enableChat.started += ctx => HandleChat();
             enableChat.Enable();
+            // Add cancel function to input delegate and enable it
             cancel.started += ctx => UnfocusChat();
             cancel.Enable();
 
             placeholder = chatField.placeholder.GetComponent<TMP_Text>();
 
             chatField.characterLimit = characterLimit;
+            // Unfocust the chat whenever we deselect it by clicking off of it
             chatField.onDeselect.AddListener(delegate { UnfocusChat(); });
         }
         private void Start()
         {
+            // Set up static instance
             if (Instance != null)
                 Destroy(this);
             Instance = this;
 
+            // Store the initial placeholder text for later use
             placeHolderText = placeholder.text;
 
             messageStackRectTransform = messageStackTransform.GetComponent<RectTransform>();
         }
         public void HandleChat()
         {
+            // Only run for the local player
             if (!Player.LocalPlayer)
                 return;
-
+            // In case we're disabled
             if (mode == ChatMode.Disabled)
                 return;
 
@@ -83,14 +89,16 @@ namespace MatchMade
                 case ChatMode.Idle:
                     FocusChat();
                     break;
+
                 case ChatMode.Active:
+                    // Unfocuse chat if the chatbar is empty
                     if (string.IsNullOrWhiteSpace(chatField.text))
                     {
                         UnfocusChat();
                         break;
                     }
 
-                    Player.LocalPlayer.CmdSendChatMessage(Player.LocalPlayer.playerName, chatField.text);
+                    Player.LocalPlayer.CmdSendChatMessage(Player.LocalPlayer.PlayerName, chatField.text);
 
                     if (unselectOnMessageSent)
                     {
@@ -98,6 +106,7 @@ namespace MatchMade
                     }
                     else
                     {
+                        // Clear chat bar and reselect it
                         chatField.text = "";
                         chatField.ActivateInputField();
                         chatField.Select();
@@ -106,28 +115,31 @@ namespace MatchMade
             }
         }
         [ClientRpc]
+        // Called by the server for all clients whenever a client sends a request to send a message to chat
         public void RpcRecieveMessage(string senderName, string message)
         {
+            // Create the chat object
             GameObject messageObject = Instantiate(messagePrefab, messageStackTransform);
+            // Set up the prefix string
             string prefix = $"[{senderName}] ";
             messageObject.GetComponentInChildren<TMP_Text>().text = prefix + message;
-
+            // Set the name of the gameObject to be something recognizable
             messageObject.name = $"Message {prefix}";
-
+            
             UIMessage messageUI = messageObject.GetComponent<UIMessage>();
-
+            // If we've reached the history limit
             if (messages.Count >= maxMessageCount)
             {
+                // Remove the oldest message from the list and destroy its object
                 UIMessage temp = messages[messages.Count - 1];
                 messages.RemoveAt(messages.Count - 1);
                 Destroy(temp.gameObject);
-
-                LayoutRebuilder.ForceRebuildLayoutImmediate(messageStackRectTransform);
             }
-
+            // Add the message UI object to the list and begin its fade
             messages.Insert(0, messageUI);
             StartCoroutine(StartMessageFade(messageObject));
-            
+
+            // Rebuild the layout groups of the chat bar and its children
             LayoutRebuilder.ForceRebuildLayoutImmediate(messageStackRectTransform);
         }
         public void FocusChat()
@@ -142,8 +154,10 @@ namespace MatchMade
             scrollView.enabled = true;
 
             mode = ChatMode.Active;
+            // Disable the character controls
             Player.LocalPlayer.CanControl = false;
 
+            // Make all existing messages visible
             foreach (UIMessage message in messages)
             {
                 message.tweenController.StopAllTweens();
@@ -155,27 +169,31 @@ namespace MatchMade
             // Chat bar
             placeholder.text = placeHolderText;
             chatField.text = "";
-            StartCoroutine(DeselectChat());
+            StartCoroutine(SetUninteractable());
             // Scroll view
             scrollView.enabled = false;
             messageStackRectTransform.LeanSetLocalPosY(0);
 
             mode = ChatMode.Idle;
-            Player.LocalPlayer.CanControl = true; 
+            // Enable the character controls
+            Player.LocalPlayer.CanControl = true;
 
+            // Make all old messages disappear
             foreach (UIMessage message in messages)
             {
+                // If it's just been sent, ignore it
                 if (message.Faded)
                     message.GetComponent<CanvasGroup>().alpha = 0;
             }
         }
-        IEnumerator DeselectChat()
+        IEnumerator SetUninteractable()
         {
             yield return new WaitForEndOfFrame();
 
             // This needs to happen at the end of the frame
             chatField.interactable = false;
         }
+        // Coroutine that fades the chat message to be transparent after a while
         IEnumerator StartMessageFade(GameObject message)
         {
             yield return new WaitForSeconds(messageVisibilityTime - fadeOutTime);
@@ -184,13 +202,14 @@ namespace MatchMade
 
             if (messageUI)
             {
-                // IF the chat bar isn't open, fade out
+                // If the chat bar isn't open, fade out
                 if (mode != ChatMode.Active)
                 {
+                    // Set to true immediately so it becomes completely opaque if we open the chat bar and it is only halfway faded
                     messageUI.Faded = true;
                     messageUI.FadeOut();
                 }
-                // If it is open, skip the fade
+                // If the chat bar is open, skip the fade
                 else
                 {
                     messageUI.Faded = true;

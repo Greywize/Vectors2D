@@ -13,12 +13,9 @@ namespace MatchMade
     {
         public static Player LocalPlayer;
 
+        public string PlayerName { get; set; }
+        public int Score { get; set; }
         public bool CanControl { get; set; }
-
-        Rigidbody2D rigidBody;
-        SpriteRenderer spriteRenderer;
-
-        public string playerName;
 
         [SerializeField] float moveSpeed;
         [SerializeField] float turnSpeed;
@@ -29,6 +26,10 @@ namespace MatchMade
         PlayerInput playerInput;
         InputActionMap controls;
         InputAction movementInput;
+
+        // Components
+        Rigidbody2D rigidBody;
+        SpriteRenderer spriteRenderer;
 
         Vector2 inputDirection;
         Vector2 movementDirection;
@@ -54,19 +55,22 @@ namespace MatchMade
                 return;
 
             LocalPlayer = this;
-            playerName = NetworkManager.Instance.playerName;
 
-            // In case it wasn't already
-            CanControl = true;
+            // Local player needs to send the server its own name
+            // ToDo - This ^
+            PlayerName = NetworkManager.Instance.localPlayerName;
 
             if (spriteRenderer)
                 spriteRenderer.color = Color.white;
+
+            // In case it wasn't already
+            CanControl = true;
 
             SetupControls();
         }
         private void FixedUpdate()
         {
-            // Return if we've been disconnected or this is not our local player
+            // Return if we've been disconnected, if this is not our local player, or if we're not allowed control
             if (!NetworkClient.isConnected || !isLocalPlayer || !CanControl)
                 return;
 
@@ -94,7 +98,7 @@ namespace MatchMade
         }
         #endregion
 
-        #region Client RPCs
+        #region RPCs
         [TargetRpc]
         public void TargetMove(NetworkConnection conn)
         {

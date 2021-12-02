@@ -11,7 +11,7 @@ public class NetworkManager : Mirror.NetworkManager
 {
     public static NetworkManager Instance;
 
-    public string playerName;
+    public string localPlayerName;
 
     [Header("Debug")]
     public bool clientLogs = true;
@@ -47,12 +47,16 @@ public class NetworkManager : Mirror.NetworkManager
         if (serverLogs)
             Debug.Log($"<color=#33FF99>[Server]</color> Client connected. ID: {conn.connectionId}");
     }
+    // Called on the server and a client disconnects, including the host
     public override void OnServerDisconnect(NetworkConnection conn)
     {
         ServerManager.Instance.connectionsCount = NetworkServer.connections.Count;
         
         if (serverLogs)
             Debug.Log($"<color=#33FF99>[Server]</color> Client disconnected. ID: {conn.connectionId}");
+
+        MatchMade.Player disconnectingPlayer = conn.identity.GetComponent<MatchMade.Player>();
+        ServerManager.Instance.onPlayerLeave(disconnectingPlayer);
 
         NetworkServer.DestroyPlayerForConnection(conn);
     }
@@ -61,16 +65,21 @@ public class NetworkManager : Mirror.NetworkManager
     {
         NetworkServer.SetClientReady(conn);
 
-        GameObject player = Instantiate(playerPrefab);
-        player.name = $"Player {conn.connectionId}";
-
+        GameObject playerObject = Instantiate(playerPrefab);
+        playerObject.name = $"Player {conn.connectionId}";
         // Add player object for connection to the scene
-        NetworkServer.AddPlayerForConnection(conn, player);
+        NetworkServer.AddPlayerForConnection(conn, playerObject);
+        MatchMade.Player player = playerObject.GetComponent<MatchMade.Player>();
 
         // --- > Client & Target RPCs contained on the player object will work from this point
 
-        ServerManager.Instance.TargetUpdateDebugInformation(conn);
+        if (ServerManager.Instance)
+        {
+            ServerManager.Instance.onPlayerJoin(player);
+            ServerManager.Instance.TargetUpdateDebugInformation(conn);
+        }
     }
+    // Call on server when the transport raises an exception
     public override void OnServerError(NetworkConnection conn, Exception exception)
     {
         if (serverLogs)
@@ -79,16 +88,19 @@ public class NetworkManager : Mirror.NetworkManager
     #endregion
     
     #region Client
+    // Invoked when the client is started
     public override void OnStartClient()
     {
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Started.");
     }
+    // Invoked when the client is stopped
     public override void OnStopClient()
     {
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Stopped.");
     }
+    // Called on the client when we connect to a server
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
@@ -99,6 +111,7 @@ public class NetworkManager : Mirror.NetworkManager
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Connected to {networkAddress} as {mode}.");
     }
+    // Called on the client when disconnected from server
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         if (clientLogs)
@@ -106,6 +119,7 @@ public class NetworkManager : Mirror.NetworkManager
 
         StopClient();
     }
+    // Called on the client when transport raises an exception
     public override void OnClientError(Exception exception)
     {
         if (clientLogs)
