@@ -71,11 +71,14 @@ public class NetworkManager : Mirror.NetworkManager
         NetworkServer.AddPlayerForConnection(conn, playerObject);
 
         // --- > Client & Target RPCs contained on the player object will work from this point
-
+        Debug.Log("Test");
         if (ServerManager.Instance)
         {
             MatchMade.Player player = playerObject.GetComponent<MatchMade.Player>();
-            // ServerManager.Instance.OnServerConnectedAndReady(player);
+
+            // Calling this causes the client to be disconnected which then reconnects, causing duplication of the player object.
+            //ServerManager.Instance.OnServerConnectedAndReady(player);
+
             ServerManager.Instance.TargetUpdateDebugInformation(conn);
         }
     }
