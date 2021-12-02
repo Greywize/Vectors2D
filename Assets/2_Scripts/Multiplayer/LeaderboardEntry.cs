@@ -29,7 +29,7 @@ namespace MatchMade
             // Score
             scoreText.text = player.Score.ToString();
         }
-        public void SetLeaderboard(Leaderboard leaderboard) { this.leaderboard = leaderboard; }
+        // public void SetLeaderboard(Leaderboard leaderboard) { this.leaderboard = leaderboard; }
         public void SetPlayer(Player player) { this.player = player; SetEntry(player); }
         public Player GetPlayer() { return player; }
         public void SetName(string name) { nameText.text = player.PlayerName; }

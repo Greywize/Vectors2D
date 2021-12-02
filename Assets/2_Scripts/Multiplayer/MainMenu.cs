@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] bool host;
     CanvasInterface canvasInterface;
 
     [SerializeField] PlayerInput playerInput;
@@ -50,6 +51,13 @@ public class MainMenu : MonoBehaviour
         }
 
         NetworkManager.Instance.localPlayerName = nameField.text;
+
+        if (host)
+        {
+            NetworkManager.Instance.StartHost();
+            validating = true;
+            return;
+        }
 
         StopAllCoroutines();
 

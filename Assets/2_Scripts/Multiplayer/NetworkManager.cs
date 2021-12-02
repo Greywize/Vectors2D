@@ -69,13 +69,13 @@ public class NetworkManager : Mirror.NetworkManager
         playerObject.name = $"Player {conn.connectionId}";
         // Add player object for connection to the scene
         NetworkServer.AddPlayerForConnection(conn, playerObject);
-        MatchMade.Player player = playerObject.GetComponent<MatchMade.Player>();
 
         // --- > Client & Target RPCs contained on the player object will work from this point
 
         if (ServerManager.Instance)
         {
-            ServerManager.Instance.onPlayerJoin(player);
+            MatchMade.Player player = playerObject.GetComponent<MatchMade.Player>();
+            // ServerManager.Instance.OnServerConnectedAndReady(player);
             ServerManager.Instance.TargetUpdateDebugInformation(conn);
         }
     }
