@@ -21,6 +21,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] TweenController loadingTweenController;
     [SerializeField] TweenController loadingBarTweenController;
     [SerializeField] TMP_InputField nameField;
+    [SerializeField] TMP_InputField addressField;
 
     bool validating = false;
 
@@ -54,6 +55,7 @@ public class MainMenu : MonoBehaviour
 
         if (host)
         {
+            NetworkManager.Instance.networkAddress = "localhost";
             NetworkManager.Instance.StartHost();
             validating = true;
             return;
@@ -67,8 +69,15 @@ public class MainMenu : MonoBehaviour
         loadingBarTweenController.BeginStage(0);
         mainTweenController.BeginStage(0).onComplete.AddListener(() =>
         {
-            // NetworkManager.Instance.StartHost();
-            NetworkDiscovery.Instance.StartDiscovery();
+            if (addressField.text == "localhost")
+            {
+                NetworkDiscovery.Instance.StartDiscovery();
+            }
+            else
+            {
+                NetworkManager.Instance.networkAddress = addressField.text;
+                NetworkManager.Instance.StartClient();
+            }
             StartCoroutine(TimeOutTimer());
         });
 
@@ -76,6 +85,7 @@ public class MainMenu : MonoBehaviour
     }
     private IEnumerator TimeOutTimer()
     {
+        NetworkManager.Instance.StopClient();
         yield return new WaitForSeconds(10);
         InterfaceManager.Instance.SetTransitionMessage("Failed to connect :<");
         loadingBarTweenController.BeginStage(1);
@@ -89,6 +99,7 @@ public class MainMenu : MonoBehaviour
 
         StopCoroutine(TimeOutTimer());
 
+        loadingBarTweenController.BeginStage(2);
         mainTweenController.BeginStage(1);
         loadingTweenController.BeginStage(0);
         NetworkDiscovery.Instance.StopDiscovery();

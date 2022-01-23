@@ -56,7 +56,7 @@ public class NetworkManager : Mirror.NetworkManager
             Debug.Log($"<color=#33FF99>[Server]</color> Client disconnected. ID: {conn.connectionId}");
 
         MatchMade.Player disconnectingPlayer = conn.identity.GetComponent<MatchMade.Player>();
-        ServerManager.Instance.onPlayerLeave(disconnectingPlayer);
+        // ServerManager.Instance.onPlayerLeave.Invoke(disconnectingPlayer);
 
         NetworkServer.DestroyPlayerForConnection(conn);
     }
@@ -71,7 +71,6 @@ public class NetworkManager : Mirror.NetworkManager
         NetworkServer.AddPlayerForConnection(conn, playerObject);
 
         // --- > Client & Target RPCs contained on the player object will work from this point
-        Debug.Log("Test");
         if (ServerManager.Instance)
         {
             MatchMade.Player player = playerObject.GetComponent<MatchMade.Player>();
@@ -133,7 +132,7 @@ public class NetworkManager : Mirror.NetworkManager
     #region Host
     public override void OnStartHost()
     {
-
+        NetworkDiscovery.Instance.AdvertiseServer();
     }
     public override void OnStopHost()
     {

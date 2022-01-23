@@ -67,6 +67,7 @@ namespace MatchMade
             CanControl = true;
 
             SetupControls();
+            Chat.Instance.UnfocusChat();
         }
         private void FixedUpdate()
         {

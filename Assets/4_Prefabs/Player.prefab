@@ -241,7 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  moveSpeed: 75
+  moveSpeed: 150
   turnSpeed: 4
 --- !u!114 &6674192790523513501
 MonoBehaviour:
