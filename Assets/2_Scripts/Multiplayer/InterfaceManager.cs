@@ -21,7 +21,7 @@ namespace MatchMade
         [SerializeField] TweenController transitionTween;
         [SerializeField] TMP_Text transitionMessageText;
 
-        CanvasInterface current;
+        InterfaceNode current;
 
         private void Awake()
         {
@@ -42,21 +42,21 @@ namespace MatchMade
 
         #region Transitioning
         // Returns the first active canvas found amongst all CanvasInterfaces 
-        public CanvasInterface FindFirstActive()
+        public InterfaceNode FindFirstActive()
         {
-            foreach (CanvasInterface canvasInterface in FindObjectsOfType<CanvasInterface>())
+            foreach (InterfaceNode canvasInterface in FindObjectsOfType<InterfaceNode>())
             {
                 if (canvasInterface.gameObject.GetComponent<Canvas>().enabled)
                     return canvasInterface;
             }
             return null;
         }
-        public void Navigate(CanvasInterface screen)
+        public void Navigate(InterfaceNode screen)
         {
             current.Navigate(screen);
             current = screen;
         }
-        public void SetCurrent(CanvasInterface newCurrent)
+        public void SetCurrent(InterfaceNode newCurrent)
         {
             current = newCurrent;
         }

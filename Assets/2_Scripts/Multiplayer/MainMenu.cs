@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] bool host;
-    CanvasInterface canvasInterface;
+    InterfaceNode canvasInterface;
 
     [SerializeField] PlayerInput playerInput;
     InputActionMap controls;
@@ -39,7 +39,7 @@ public class MainMenu : MonoBehaviour
     }
     private void Awake()
     {
-        canvasInterface = GetComponent<CanvasInterface>();   
+        canvasInterface = GetComponent<InterfaceNode>();   
     }
     public void ValidateAndConnect()
     {
