@@ -123,6 +123,243 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &122812139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 122812140}
+  - component: {fileID: 122812142}
+  - component: {fileID: 122812141}
+  - component: {fileID: 122812143}
+  m_Layer: 0
+  m_Name: Server
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &122812140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122812139}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1465221072}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &122812141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122812139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Port: 8779
+  DualMode: 1
+  NoDelay: 1
+  Interval: 10
+  Timeout: 10000
+  FastResend: 2
+  CongestionWindow: 0
+  SendWindowSize: 4096
+  ReceiveWindowSize: 4096
+  NonAlloc: 1
+  debugLog: 0
+  statisticsGUI: 0
+  statisticsLog: 0
+--- !u!114 &122812142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122812139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baf0c665f76369d4caea8ad23b46b756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 1
+  PersistNetworkManagerToOfflineScene: 0
+  runInBackground: 1
+  autoStartServerBuild: 1
+  serverTickRate: 30
+  offlineScene: 
+  onlineScene: 
+  transport: {fileID: 122812141}
+  networkAddress: localhost
+  maxConnections: 100
+  disconnectInactiveConnections: 0
+  disconnectInactiveTimeout: 60
+  authenticator: {fileID: 0}
+  playerPrefab: {fileID: 0}
+  autoCreatePlayer: 0
+  playerSpawnMethod: 0
+  spawnPrefabs: []
+  localPlayerName: 
+  clientLogs: 1
+  serverLogs: 1
+--- !u!114 &122812143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122812139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040f14b86f43f53489e6640e08d813f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &123429602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 123429603}
+  - component: {fileID: 123429605}
+  - component: {fileID: 123429604}
+  - component: {fileID: 123429606}
+  m_Layer: 5
+  m_Name: Foreground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &123429603
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123429602}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 911685275}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &123429604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123429602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 04f97ad02ec99d44e82b504f33c5335c, type: 2}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 2
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 5
+--- !u!222 &123429605
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123429602}
+  m_CullTransparentMesh: 1
+--- !u!114 &123429606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123429602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4331bff977c4204f8e9f77d348b080f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beginOnStart: 0
+  startStage: 0
+  loop: 0
+  playAll: 0
+  stages:
+  - tweens:
+    - mode: 3
+      ease: 2
+      time: 0.5
+      delay: 0
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 1, g: 1, b: 1, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 3
+      ease: 2
+      time: 0.5
+      delay: 0
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 1, g: 1, b: 1, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &277944110
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +389,7 @@ Transform:
   m_Children:
   - {fileID: 911685275}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &496088800
 GameObject:
@@ -188,8 +425,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.4, y: -3.5}
-  m_SizeDelta: {x: 1000, y: 1000}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 5000, y: 5045}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &496088802
 MonoBehaviour:
@@ -211,7 +448,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b14053e7c92511446985bb8bc471c6fe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 15fc622cc488aba4bbb48fccc617eddb, type: 3}
   m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -220,7 +457,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 10
+  m_PixelsPerUnitMultiplier: 5
 --- !u!222 &496088803
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -333,13 +570,15 @@ RectTransform:
   m_Children:
   - {fileID: 496088801}
   - {fileID: 947489701}
+  - {fileID: 1387420499}
+  - {fileID: 123429603}
   m_Father: {fileID: 277944111}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 1000}
+  m_SizeDelta: {x: 5000, y: 5045}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &911685276
 MonoBehaviour:
@@ -414,8 +653,9 @@ GameObject:
   - component: {fileID: 947489704}
   - component: {fileID: 947489703}
   - component: {fileID: 947489702}
+  - component: {fileID: 947489705}
   m_Layer: 5
-  m_Name: Hexagon
+  m_Name: Hexagon Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -437,8 +677,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 26.7592, y: 23.3255}
+  m_AnchoredPosition: {x: -0.0434, y: 0.0107}
+  m_SizeDelta: {x: 30.1187, y: 26.2886}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &947489702
 MonoBehaviour:
@@ -454,22 +694,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.8
-  m_Color: {r: 0.10196078, g: 1, b: 0.39790428, a: 1}
-  m_Intensity: 1
+  m_FalloffIntensity: 0.6
+  m_Color: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+  m_Intensity: 0
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000
   m_LightCookieSprite: {fileID: 0}
-  m_UseNormalMap: 0
+  m_UseNormalMap: 1
   m_LightOrder: 0
   m_AlphaBlendOnOverlap: 0
   m_ShadowIntensity: 0
-  m_ShadowVolumeIntensity: 0
+  m_ShadowVolumeIntensity: 0.586
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 11
   m_PointLightOuterRadius: 110
-  m_PointLightDistance: 3
+  m_PointLightDistance: 100
   m_PointLightQuality: 1
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
@@ -494,7 +734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 04f97ad02ec99d44e82b504f33c5335c, type: 2}
-  m_Color: {r: 0.10196078, g: 1, b: 0.39790428, a: 1}
+  m_Color: {r: 0.10196078, g: 1, b: 0.92516327, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -519,6 +759,903 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947489700}
   m_CullTransparentMesh: 1
+--- !u!114 &947489705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947489700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4331bff977c4204f8e9f77d348b080f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beginOnStart: 0
+  startStage: 0
+  loop: 1
+  playAll: 0
+  stages:
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.10196078, g: 1, b: 0.92516327, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 6
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 1, g: 0.5509804, b: 0.10196078, a: 1}
+      color: {r: 0.10196078, g: 1, b: 0.92516327, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 1, g: 0.5509804, b: 0.10196078, a: 1}
+      color: {r: 1, g: 0.5509804, b: 0.10196078, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 1, g: 0.5509804, b: 0.10196078, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 1, g: 0.5509804, b: 0.10196078, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 1, g: 0.5509804, b: 0.10196078, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 1, g: 0.5509804, b: 0.10196078, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 6
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.47614366, g: 0.10196078, b: 1, a: 1}
+      color: {r: 1, g: 0.5509804, b: 0.10196078, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.47614366, g: 0.10196078, b: 1, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.47614366, g: 0.10196078, b: 1, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.47614366, g: 0.10196078, b: 1, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.47614366, g: 0.10196078, b: 1, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.47614366, g: 0.10196078, b: 1, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 6
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.10196078, g: 1, b: 0.39790428, a: 1}
+      color: {r: 0.47614366, g: 0.10196078, b: 1, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.10196078, g: 1, b: 0.39790428, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.39790428, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.10196078, g: 1, b: 0.39790428, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.10196078, g: 1, b: 0.39790428, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.10196078, g: 1, b: 0.39790428, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 6
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 1, g: 0.100000024, b: 0.17500016, a: 1}
+      color: {r: 1, g: 0.100000024, b: 0.17500016, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 1, g: 0.100000024, b: 0.17500016, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 1, g: 0.100000024, b: 0.17500016, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 1, g: 0.100000024, b: 0.17500016, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 1, g: 0.100000024, b: 0.17500016, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 1, g: 0.100000024, b: 0.17500016, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 6
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.10196078, g: 0.4013073, b: 1, a: 1}
+      color: {r: 1, g: 0.100000024, b: 0.17500016, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.10196078, g: 0.4013073, b: 1, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 0.4013073, b: 1, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.10196078, g: 0.4013073, b: 1, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.10196078, g: 0.4013073, b: 1, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.10196078, g: 0.4013073, b: 1, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 6
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.9333334, g: 1, b: 0.19999999, a: 1}
+      color: {r: 0.10196078, g: 0.4013073, b: 1, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.9333334, g: 1, b: 0.19999999, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.9333334, g: 1, b: 0.19999999, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.9333334, g: 1, b: 0.19999999, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.9333334, g: 1, b: 0.19999999, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.9333334, g: 1, b: 0.19999999, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 6
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 1, g: 0.10196078, b: 0.85032696, a: 1}
+      color: {r: 0.9333334, g: 1, b: 0.19999999, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 1, g: 0.10196078, b: 0.85032696, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 1, g: 0.10196078, b: 0.85032696, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 1, g: 0.10196078, b: 0.85032696, a: 1}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - tweens:
+    - mode: 6
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 1, g: 0.10196078, b: 0.85032696, a: 1}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 1
+      delay: 1
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 1, g: 0.10196078, b: 0.85032696, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 6
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 0
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 1, g: 0.10196078, b: 0.85032696, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    - mode: 3
+      ease: 2
+      time: 0.001
+      delay: 2
+      value: 0
+      alpha: 0
+      scale: 0
+      lightIntensity: 1
+      lightColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+      color: {r: 0.10196078, g: 1, b: 0.92516327, a: 0}
+      sizeVector: {x: 0, y: 0}
+      scaleVector: {x: 0, y: 0}
+      rotation: 0
+      positionVector: {x: 0, y: 0}
+      uniformScale: 0
+      completed: 0
+      hideOnComplete: 0
+    onComplete:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &1010878414
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,7 +1668,7 @@ GameObject:
   - component: {fileID: 1010878416}
   - component: {fileID: 1010878418}
   m_Layer: 0
-  m_Name: Interface Camera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -564,7 +1701,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 150
+  orthographic size: 100
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -700,6 +1837,257 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1387420498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1387420499}
+  - component: {fileID: 1387420502}
+  - component: {fileID: 1387420501}
+  - component: {fileID: 1387420500}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1387420499
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387420498}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 911685275}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -42.5}
+  m_SizeDelta: {x: 58.5, y: 11.28}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1387420500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387420498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
+--- !u!114 &1387420501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387420498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Connecting
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: a9484192f972b0d4e92aa2fff3ff847f, type: 2}
+  m_sharedMaterial: {fileID: -1085695739440991428, guid: a9484192f972b0d4e92aa2fff3ff847f, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4293721882
+  m_fontColor: {r: 0.10196078, g: 1, b: 0.92516327, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 10
+  m_fontSizeBase: 10
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1387420502
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387420498}
+  m_CullTransparentMesh: 1
+--- !u!1 &1465221071
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1465221072}
+  m_Layer: 0
+  m_Name: --- Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1465221072
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465221071}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 122812140}
+  - {fileID: 1700073471}
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1700073470
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1700073471}
+  - component: {fileID: 1700073472}
+  m_Layer: 0
+  m_Name: Sequencer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1700073471
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700073470}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1465221072}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1700073472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700073470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0353d94aa769015438b863777ada6468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 123429606}
+        m_TargetAssemblyTypeName: TweenController, Assembly-CSharp
+        m_MethodName: QueueStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 947489705}
+        m_TargetAssemblyTypeName: TweenController, Assembly-CSharp
+        m_MethodName: QueueStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2049693797
 GameObject:
   m_ObjectHideFlags: 0

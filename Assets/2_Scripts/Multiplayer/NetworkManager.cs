@@ -20,7 +20,7 @@ public class NetworkManager : Mirror.NetworkManager
     public override void Awake()
     {
         base.Awake();
-
+        
         // Set up static instance so we can access this anywhere
         if (Instance != null)
             Destroy(this);
@@ -146,11 +146,11 @@ public class NetworkManager : Mirror.NetworkManager
         {
             case NetworkManagerMode.Offline:
                 return;
-            case NetworkManagerMode.ServerOnly:
-                StopServer();
-                return;
             case NetworkManagerMode.ClientOnly:
                 StopClient();
+                return;
+            case NetworkManagerMode.ServerOnly:
+                StopServer();
                 return;
             case NetworkManagerMode.Host:
                 StopHost();

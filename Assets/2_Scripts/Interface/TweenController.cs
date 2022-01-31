@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Experimental.Rendering.Universal;
 
 [DisallowMultipleComponent]
 public class TweenController : MonoBehaviour
@@ -23,6 +24,7 @@ public class TweenController : MonoBehaviour
     private CanvasGroup canvasGroup;
     private RectTransform rect;
     private Image image;
+    new private Light2D light;
 
     // Variables
     public bool beginOnStart;
@@ -76,6 +78,10 @@ public class TweenController : MonoBehaviour
             case Tween.TweenMode.Color:
                 TweenColor(tween);
                 break;
+            case Tween.TweenMode.Light:
+                TweenLightIntensity(tween);
+                TweenLightColor(tween);
+                break;
             case Tween.TweenMode.Position:
                 TweenPosition(tween);
                 break;
@@ -86,7 +92,11 @@ public class TweenController : MonoBehaviour
 
         return tween;
     }
-
+    // Does the same thing as BeginStage but returns nothing so can be used in a Unity Event
+    public void QueueStage(int stage)
+    {
+        BeginStage(stage);
+    }
     public TweenStage BeginStage(int stage)
     {
         if (stage > stages.Count + 1 || stages.Count == 0)
@@ -136,6 +146,10 @@ public class TweenController : MonoBehaviour
                     break;
                 case Tween.TweenMode.Color:
                     TweenColor(tween);
+                    break;
+                case Tween.TweenMode.Light:
+                    TweenLightIntensity(tween);
+                    TweenLightColor(tween);
                     break;
                 case Tween.TweenMode.Position:
                     TweenPosition(tween);
@@ -234,7 +248,39 @@ public class TweenController : MonoBehaviour
                 return;
             }
         }
-        LeanTween.value(image.gameObject, ColorChangeCallback, image.color, tween.color, tween.time)
+        LeanTween.value(image.gameObject, ImageColorChangeCallback, image.color, tween.color, tween.time)
+            .setDelay(tween.delay)
+            .setEase(tween.ease)
+            .setOnComplete(() => { OnAnyTweenComplete(tween); });
+    }
+    private void TweenLightColor(Tween tween)
+    {
+        if (!light)
+        {
+            light = GetComponent<Light2D>();
+            if (light == null)
+            {
+                Debug.LogWarning($"A Light2D is required to tween light color, but it was missing on {gameObject.name}.");
+                return;
+            }
+        }
+        LeanTween.value(light.gameObject, LightColorChangeCallback, light.color, tween.lightColor, tween.time)
+            .setDelay(tween.delay)
+            .setEase(tween.ease)
+            .setOnComplete(() => { OnAnyTweenComplete(tween); });
+    }
+    private void TweenLightIntensity(Tween tween)
+    {
+        if (!light)
+        {
+            light = GetComponent<Light2D>();
+            if (light == null)
+            {
+                Debug.LogWarning($"A Light2D is required to tween light color, but it was missing on {gameObject.name}.");
+                return;
+            }
+        }
+        LeanTween.value(light.gameObject, LightIntensityChangeCallback, light.intensity, tween.lightIntensity, tween.time)
             .setDelay(tween.delay)
             .setEase(tween.ease)
             .setOnComplete(() => { OnAnyTweenComplete(tween); });
@@ -254,9 +300,18 @@ public class TweenController : MonoBehaviour
             .setOnComplete(() => { OnAnyTweenComplete(tween); });
     }
     // Used by TweenColor() to change the color of the image at each step of the tween
-    private void ColorChangeCallback(Color color)
+    private void ImageColorChangeCallback(Color color)
     {
         image.color = color;
+    }
+    // Used by TweenLightColor() to change the color of the light at each step of the tween
+    private void LightColorChangeCallback(Color color)
+    {
+        light.color = color;
+    }// Used by TweenLightIntensity() to change the intensity of the light at each step of the tween
+    private void LightIntensityChangeCallback(float intensity)
+    {
+        light.intensity = intensity;
     }
     // Called by every tween when it completes
     private void OnAnyTweenComplete(Tween tween)
