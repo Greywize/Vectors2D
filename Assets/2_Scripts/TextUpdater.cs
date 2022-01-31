@@ -3,27 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(TMPro.TMP_Text))]
-[DefaultExecutionOrder(+1)]
+[DefaultExecutionOrder(-1)]
 public class TextUpdater : MonoBehaviour
 {
-    private TMPro.TMP_Text textObject;
+    public static TMPro.TMP_Text textObject;
+    private static TweenController tweenController;
 
-    private void Start()
+    public delegate void TextUpdateEvent(string text);
+    public static TextUpdateEvent updateText;
+
+    [SerializeField]
+    static AnimationCurve blinkCurve;
+
+    public void Awake()
     {
         textObject = GetComponent<TMPro.TMP_Text>();
+        tweenController = GetComponent<TweenController>();
     }
 
     private void OnEnable()
     {
-        // InterfaceManager.Instance.onLoadingScreenEvent += UpdateText;
+        updateText += UpdateText;
     }
     private void OnDisable()
     {
-        // InterfaceManager.Instance.onLoadingScreenEvent -= UpdateText;
+        updateText -= UpdateText;
     }
 
     private void UpdateText(string message)
     {
-        textObject.text = message;
+        if (tweenController)
+        {
+            tweenController.BeginStage(1).onComplete.AddListener(() => {
+                textObject.text = message;
+                tweenController.BeginStage(0);
+            });
+        }
+        else
+        {
+            textObject.text = message;
+        }
     }
 }

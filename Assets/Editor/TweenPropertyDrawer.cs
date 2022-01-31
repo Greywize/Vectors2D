@@ -6,7 +6,7 @@ public class TweenPropertyDrawer : PropertyDrawer
 {
     int lines;
 
-    SerializedProperty mode, ease, time, delay, alpha, scale, rotation, sizeVector, scaleVector, positionVector, color, lightIntensity, lightColor, value, uniformScale, hideOnComplete;
+    SerializedProperty mode, ease, time, delay, alpha, scale, rotation, sizeVector, scaleVector, positionVector, color, lightIntensity, lightColor, value, textColor, uniformScale, hideOnComplete;
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
@@ -31,6 +31,7 @@ public class TweenPropertyDrawer : PropertyDrawer
         scale = property.FindPropertyRelative("scale");
         sizeVector = property.FindPropertyRelative("sizeVector");
         color = property.FindPropertyRelative("color");
+        textColor = property.FindPropertyRelative("textColor");
         lightIntensity = property.FindPropertyRelative("lightIntensity");
         lightColor = property.FindPropertyRelative("lightColor");
         value = property.FindPropertyRelative("value");
@@ -78,17 +79,20 @@ public class TweenPropertyDrawer : PropertyDrawer
             case 3: // Color
                 EditorGUI.PropertyField(lineSixRect, color, new GUIContent("Color"));
                 break;
-            case 4: // Position
+            case 4: // Text Color
+                EditorGUI.PropertyField(lineSixRect, textColor, new GUIContent("Text Color"));
+                break;
+            case 5: // Position
                 EditorGUI.PropertyField(lineSixRect, positionVector, new GUIContent("Position"));
                 break;
-            case 5: // Rotation
+            case 6: // Rotation
                 EditorGUI.PropertyField(lineSixRect, rotation, new GUIContent("Rotation"));
                 break;
-            case 6: // Light
+            case 7: // Light
                 EditorGUI.PropertyField(lineSixRect, lightIntensity, new GUIContent("Intensity"));
                 EditorGUI.PropertyField(lineSevenRect, lightColor, new GUIContent("Color"));
                 break;
-            case 7: // Value
+            case 8: // Value
                 EditorGUI.PropertyField(lineSixRect, value, new GUIContent("Custom Value"));
                 break;
         }

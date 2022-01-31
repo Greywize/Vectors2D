@@ -71,7 +71,7 @@ public class MainMenu : MonoBehaviour
         {
             if (addressField.text == "localhost")
             {
-                NetworkDiscovery.Instance.StartDiscovery();
+                //NetworkDiscovery.Instance.StartDiscovery();
             }
             else
             {
@@ -102,7 +102,7 @@ public class MainMenu : MonoBehaviour
         loadingBarTweenController.BeginStage(2);
         mainTweenController.BeginStage(1);
         loadingTweenController.BeginStage(0);
-        NetworkDiscovery.Instance.StopDiscovery();
+        //NetworkDiscovery.Instance.StopDiscovery();
 
         validating = false;
     }

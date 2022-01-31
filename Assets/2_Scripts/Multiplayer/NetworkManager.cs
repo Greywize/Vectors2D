@@ -7,9 +7,11 @@ using MatchMade;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
+[DefaultExecutionOrder(-1)]
 public class NetworkManager : Mirror.NetworkManager
 {
     public static NetworkManager Instance;
+    private NetworkDiscovery networkDiscovery;
 
     public string localPlayerName;
 
@@ -26,6 +28,12 @@ public class NetworkManager : Mirror.NetworkManager
             Destroy(this);
         Instance = this;
     }
+    public override void Start()
+    {
+        base.Start();
+
+        networkDiscovery = GetComponent<NetworkDiscovery>();
+    }
 
     #region Server
     public override void OnStartServer()
@@ -38,48 +46,23 @@ public class NetworkManager : Mirror.NetworkManager
         if (serverLogs)
             Debug.Log($"<color=#33FF99>[Server]</color> Stopped.");
     }
-
     // Called on the server when a client connects - Too early for Client & Target RPCs
     public override void OnServerConnect(NetworkConnection conn)
     {
-        ServerManager.Instance.connectionsCount = NetworkServer.connections.Count;
-
         if (serverLogs)
             Debug.Log($"<color=#33FF99>[Server]</color> Client connected. ID: {conn.connectionId}");
     }
     // Called on the server and a client disconnects, including the host
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        ServerManager.Instance.connectionsCount = NetworkServer.connections.Count;
-        
         if (serverLogs)
             Debug.Log($"<color=#33FF99>[Server]</color> Client disconnected. ID: {conn.connectionId}");
-
-        MatchMade.Player disconnectingPlayer = conn.identity.GetComponent<MatchMade.Player>();
-        // ServerManager.Instance.onPlayerLeave.Invoke(disconnectingPlayer);
-
-        NetworkServer.DestroyPlayerForConnection(conn);
     }
     // Called on the server when a client is ready & has loaded the scene - Client & Target RPCs NOT contained on the player object will work after this is called
     public override void OnServerReady(NetworkConnection conn)
     {
-        NetworkServer.SetClientReady(conn);
-
-        GameObject playerObject = Instantiate(playerPrefab);
-        playerObject.name = $"Player {conn.connectionId}";
-        // Add player object for connection to the scene
-        NetworkServer.AddPlayerForConnection(conn, playerObject);
-
-        // --- > Client & Target RPCs contained on the player object will work from this point
-        if (ServerManager.Instance)
-        {
-            MatchMade.Player player = playerObject.GetComponent<MatchMade.Player>();
-
-            // Calling this causes the client to be disconnected which then reconnects, causing duplication of the player object.
-            //ServerManager.Instance.OnServerConnectedAndReady(player);
-
-            ServerManager.Instance.TargetUpdateDebugInformation(conn);
-        }
+        if (serverLogs)
+            Debug.Log($"<color=#33FF99>[Server]</color> Ready.");
     }
     // Call on server when the transport raises an exception
     public override void OnServerError(NetworkConnection conn, Exception exception)
@@ -105,21 +88,24 @@ public class NetworkManager : Mirror.NetworkManager
     // Called on the client when we connect to a server
     public override void OnClientConnect(NetworkConnection conn)
     {
-        base.OnClientConnect(conn);
-
-        if (!NetworkClient.ready) 
-            NetworkClient.Ready();
-
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Connected to {networkAddress} as {mode}.");
+
+        switch (mode)
+        {
+            case NetworkManagerMode.ClientOnly:
+                TextUpdater.updateText?.Invoke($"Connected as client");
+                break;
+            case NetworkManagerMode.Host:
+                TextUpdater.updateText?.Invoke($"Connected as host");
+                break;
+        }
     }
     // Called on the client when disconnected from server
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Disconnected.");
-
-        StopClient();
     }
     // Called on the client when transport raises an exception
     public override void OnClientError(Exception exception)
@@ -129,32 +115,15 @@ public class NetworkManager : Mirror.NetworkManager
     }
     #endregion
 
+    // We shouldn't need to use these - nvm we do
     #region Host
     public override void OnStartHost()
     {
-        NetworkDiscovery.Instance.AdvertiseServer();
+
     }
     public override void OnStopHost()
     {
 
     }
     #endregion
-
-    public void Disconnect()
-    {
-        switch (mode)
-        {
-            case NetworkManagerMode.Offline:
-                return;
-            case NetworkManagerMode.ClientOnly:
-                StopClient();
-                return;
-            case NetworkManagerMode.ServerOnly:
-                StopServer();
-                return;
-            case NetworkManagerMode.Host:
-                StopHost();
-                return;
-        }
-    }
 }

@@ -8,27 +8,40 @@ using System.Net.Sockets;
 
 public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
 {
-    public static NetworkDiscovery Instance;
+    [SerializeField]
+    string localIp;
+    [SerializeField] [Range(0, 10)]
+    int discoveryTimeOut = 5;
 
-    [SerializeField] string localIp;
+    public delegate void DiscoveryEvent();
+    public DiscoveryEvent onDiscoveryTimeOut;
+
+    private void OnEnable()
+    {
+        onDiscoveryTimeOut += StartHost;
+        onDiscoveryTimeOut += AdvertiseServer;
+    }
+    private void OnDisable()
+    {
+        onDiscoveryTimeOut -= StartHost;
+        onDiscoveryTimeOut -= AdvertiseServer;
+    }
 
     public override void Start()
     {
+        TextUpdater.updateText?.Invoke("Connecting");
         base.Start();
 
-        if (Instance != null)
-            Destroy(this);
-        Instance = this;
-
         localIp = LocalIPAddress();
+
+        StartDiscovery();
+        StartCoroutine(StartTimeOutTimer(discoveryTimeOut));
     }
 
     public void ServerFound(ServerResponse response)
     {
-        // StopDiscovery();
-
         string address;
-        
+
         if (response.uri.Host == localIp)
             address = "localhost";
         else
@@ -40,7 +53,7 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
         NetworkManager.Instance.networkAddress = address;
         NetworkManager.Instance.StartClient();
     }
-    
+
     public string LocalIPAddress()
     {
         IPHostEntry host;
@@ -55,5 +68,31 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
             }
         }
         return localIP;
+    }
+
+    IEnumerator StartTimeOutTimer(int timeOut)
+    {
+        yield return new WaitForSeconds(timeOut);
+
+        if (!NetworkManager.Instance.isNetworkActive)
+        {
+            TextUpdater.updateText?.Invoke("Hosting");
+            yield return new WaitForSeconds(1);
+
+            StopDiscovery();
+            onDiscoveryTimeOut?.Invoke();
+        }
+    }
+
+    private void StartHost()
+    {
+        try
+        {
+            NetworkManager.Instance.StartHost();
+        }
+        catch (SocketException exception)
+        {
+            TextUpdater.updateText?.Invoke("Server already exists");
+        }
     }
 }

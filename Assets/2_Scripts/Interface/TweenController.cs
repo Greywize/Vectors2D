@@ -25,6 +25,7 @@ public class TweenController : MonoBehaviour
     private RectTransform rect;
     private Image image;
     new private Light2D light;
+    private TMPro.TMP_Text text;
 
     // Variables
     public bool beginOnStart;
@@ -77,6 +78,9 @@ public class TweenController : MonoBehaviour
                 break;
             case Tween.TweenMode.Color:
                 TweenColor(tween);
+                break;
+            case Tween.TweenMode.TextColor:
+                TweenTextColor(tween);
                 break;
             case Tween.TweenMode.Light:
                 TweenLightIntensity(tween);
@@ -146,6 +150,9 @@ public class TweenController : MonoBehaviour
                     break;
                 case Tween.TweenMode.Color:
                     TweenColor(tween);
+                    break;
+                case Tween.TweenMode.TextColor:
+                    TweenTextColor(tween);
                     break;
                 case Tween.TweenMode.Light:
                     TweenLightIntensity(tween);
@@ -253,6 +260,22 @@ public class TweenController : MonoBehaviour
             .setEase(tween.ease)
             .setOnComplete(() => { OnAnyTweenComplete(tween); });
     }
+    private void TweenTextColor(Tween tween)
+    {
+        if (!text)
+        {
+            text = GetComponent<TMPro.TMP_Text>();
+            if (text == null)
+            {
+                Debug.LogWarning($"A text component is required to tween text color, but it was missing on {gameObject.name}.");
+                return;
+            }
+        }
+        LeanTween.value(text.gameObject, TextColorChangeCallback, text.color, tween.textColor, tween.time)
+            .setDelay(tween.delay)
+            .setEase(tween.ease)
+            .setOnComplete(() => { OnAnyTweenComplete(tween); });
+    }
     private void TweenLightColor(Tween tween)
     {
         if (!light)
@@ -303,6 +326,11 @@ public class TweenController : MonoBehaviour
     private void ImageColorChangeCallback(Color color)
     {
         image.color = color;
+    }
+    // Used by TweenTextColor() to change the color of the text at each step of the tween
+    private void TextColorChangeCallback(Color color)
+    {
+        text.color = color;
     }
     // Used by TweenLightColor() to change the color of the light at each step of the tween
     private void LightColorChangeCallback(Color color)

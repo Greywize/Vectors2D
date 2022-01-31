@@ -87,7 +87,7 @@ namespace MatchMade
         #region Buttons 
         public void Disconnect()
         {
-            NetworkManager.Instance.Disconnect();
+            // NetworkManager.Instance.Disconnect();
         }
         public void Quit()
         {

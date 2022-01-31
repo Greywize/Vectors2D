@@ -11,6 +11,7 @@ public class Tween
         Scale,
         Size,
         Color,
+        TextColor,
         Position,
         Rotation,
         Light,
@@ -47,9 +48,11 @@ public class Tween
     [Tooltip("Tweens the intesity of a light")]
     public float lightIntensity;
     [Tooltip("Tweens the color of a light")]
-    public Color lightColor = Color.white;
-    [Tooltip("Tweens the color of the object")]
     public Color color = Color.white;
+    [Tooltip("Tweens the color of the object")]
+    public Color lightColor = Color.white;
+    [Tooltip("Tweens the color of a text component")]
+    public Color textColor = Color.white;
     [Tooltip("Tweens the width and height of the object relative to the RectTransform's anchor points")]
     public Vector2 sizeVector;
     [Tooltip("Tweens the scale of the object non-uniformly")]
