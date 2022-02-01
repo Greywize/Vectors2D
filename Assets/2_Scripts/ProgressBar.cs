@@ -9,7 +9,7 @@ public class ProgressBar : MonoBehaviour
     Image image;
     RectTransform rectTransform;
 
-    TweenController tweenController;
+    MultiTween tweenController;
 
     public List<Tween> progressCompleteTweens = new List<Tween>();
 
@@ -21,7 +21,7 @@ public class ProgressBar : MonoBehaviour
         image = GetComponent<Image>();
         rectTransform = GetComponent<RectTransform>();
 
-        tweenController = GetComponent<TweenController>();
+        tweenController = GetComponent<MultiTween>();
     }
     private void Start()
     {
@@ -46,7 +46,7 @@ public class ProgressBar : MonoBehaviour
         {
             foreach(Tween tween in progressCompleteTweens)
             {
-                tweenController.StartTween(tween);
+                // tweenController.StartTween(tween);
             }
         }
     }

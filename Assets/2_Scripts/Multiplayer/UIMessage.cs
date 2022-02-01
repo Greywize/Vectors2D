@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static TweenController;
+using static MultiTween;
 
 public class UIMessage : MonoBehaviour
 {
     [HideInInspector]
-    public TweenController tweenController;
+    public MultiTween tweenController;
 
     public bool Faded { get; set; }
 
     private void Start()
     {
-        tweenController = GetComponent<TweenController>();
+        tweenController = GetComponent<MultiTween>();
     }
-    public TweenStage FadeOut()
+    public TweenSet FadeOut()
     {
         tweenController.BeginStage(0);
 
-        return tweenController.stages[0];
+        return tweenController.sets[0];
     }
 }

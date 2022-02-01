@@ -529,7 +529,7 @@ public class LeanTween : MonoBehaviour {
     * @example LeanTween.move( gameObject, new Vector3(0f,1f,2f), 1f); <br />
     * LeanTween.cancel( gameObject );
     */
-    public static void cancel( GameObject gameObject ){
+    public static void Cancel( GameObject gameObject ){
         cancel( gameObject, false);
     }
     public static void cancel( GameObject gameObject, bool callOnComplete ){

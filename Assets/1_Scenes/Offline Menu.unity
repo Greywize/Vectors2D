@@ -645,6 +645,7 @@ GameObject:
   - component: {fileID: 1064606342}
   - component: {fileID: 1064606343}
   - component: {fileID: 1064606344}
+  - component: {fileID: 1064606345}
   m_Layer: 0
   m_Name: Interface Manager
   m_TagString: Untagged
@@ -689,6 +690,66 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5211b837cf0ad2e4592aec2e0a37e1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextWhiteOut:
+    textObject: {fileID: 0}
+    rectTransform: {fileID: 0}
+    gameObject: {fileID: 0}
+    light2D: {fileID: 0}
+    image: {fileID: 0}
+    mode: 4
+    ease: 2
+    time: 0.15
+    delay: 0
+    value: 0
+    alpha: 0
+    scale: 0
+    lightIntensity: 0
+    color: {r: 1, g: 1, b: 1, a: 1}
+    lightColor: {r: 1, g: 1, b: 1, a: 1}
+    textColor: {r: 1, g: 1, b: 1, a: 0}
+    sizeVector: {x: 0, y: 0}
+    scaleVector: {x: 0, y: 0}
+    rotation: 0
+    positionVector: {x: 0, y: 0}
+    uniformScale: 0
+    completed: 0
+    hideOnComplete: 0
+  TextWhiteIn:
+    textObject: {fileID: 0}
+    rectTransform: {fileID: 0}
+    gameObject: {fileID: 0}
+    light2D: {fileID: 0}
+    image: {fileID: 0}
+    mode: 4
+    ease: 2
+    time: 0.15
+    delay: 0
+    value: 0
+    alpha: 0
+    scale: 0
+    lightIntensity: 0
+    color: {r: 1, g: 1, b: 1, a: 1}
+    lightColor: {r: 1, g: 1, b: 1, a: 1}
+    textColor: {r: 1, g: 1, b: 1, a: 1}
+    sizeVector: {x: 0, y: 0}
+    scaleVector: {x: 0, y: 0}
+    rotation: 0
+    positionVector: {x: 0, y: 0}
+    uniformScale: 0
+    completed: 0
+    hideOnComplete: 0
+--- !u!114 &1064606345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064606341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ed8c03ddd7a8f744abc343500b6122f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1245069396

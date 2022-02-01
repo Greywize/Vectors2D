@@ -97,7 +97,7 @@ namespace DentedPixel.LTExamples
                 {
                     if (i % 3 == 0)
                     {
-                        LeanTween.cancel(cubes[i]);
+                        LeanTween.Cancel(cubes[i]);
                     }
                     else if (i % 3 == 1)
                     {
@@ -447,7 +447,7 @@ namespace DentedPixel.LTExamples
             int countBeforeCancel = LeanTween.tweensRunning;
             LeanTween.cancel(lt1Id);
             LeanTest.expect(countBeforeCancel == LeanTween.tweensRunning, "CANCEL AFTER RESET SHOULD FAIL", "expected " + countBeforeCancel + " but got " + LeanTween.tweensRunning);
-            LeanTween.cancel(cube2);
+            LeanTween.Cancel(cube2);
 
             int tweenCount = 0;
             for (int i = 0; i < groupTweens.Length; i++)
@@ -559,7 +559,7 @@ namespace DentedPixel.LTExamples
 
             for (int i = 0; i < aGOs.Length; i++)
             {
-                LeanTween.cancel(aGOs[i]);
+                LeanTween.Cancel(aGOs[i]);
                 GameObject cube = aGOs[i];
                 tweensA[i] = LeanTween.move(cube, new Vector3(0, 0, i * 2f), 2f).id;
             }
@@ -568,14 +568,14 @@ namespace DentedPixel.LTExamples
 
             for (int i = 0; i < aGOs.Length; i++)
             {
-                LeanTween.cancel(aGOs[i]);
+                LeanTween.Cancel(aGOs[i]);
                 GameObject cube = aGOs[i];
                 tweensA[i] = LeanTween.move(cube, new Vector3(0, 0, i * 2f) + new Vector3(10f, 0, 0), 2f).id;
             }
 
             for (int i = 0; i < bGOs.Length; i++)
             {
-                LeanTween.cancel(bGOs[i]);
+                LeanTween.Cancel(bGOs[i]);
                 GameObject cube = bGOs[i];
                 tweensB[i] = LeanTween.move(cube, new Vector3(0, 0, i * 2f), 2f).id;
             }

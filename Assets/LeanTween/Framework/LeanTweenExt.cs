@@ -17,7 +17,7 @@ public static class LeanTweenExt
     //LeanTween.alphaText
     public static LTDescr LeanAlphaText(this RectTransform rectTransform, float to, float time) { return LeanTween.alphaText(rectTransform, to, time); }
     //LeanTween.cancel
-    public static void LeanCancel(this GameObject gameObject) { LeanTween.cancel(gameObject); }
+    public static void LeanCancel(this GameObject gameObject) { LeanTween.Cancel(gameObject); }
     public static void LeanCancel(this GameObject gameObject, bool callOnComplete) { LeanTween.cancel(gameObject, callOnComplete); }
     public static void LeanCancel(this GameObject gameObject, int uniqueId, bool callOnComplete = false) { LeanTween.cancel(gameObject, uniqueId, callOnComplete); }
     //LeanTween.cancel

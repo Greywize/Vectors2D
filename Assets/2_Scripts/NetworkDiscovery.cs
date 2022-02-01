@@ -33,7 +33,7 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
 
     public override void Start()
     {
-        Texter.updateText?.Invoke(loadingText, null, "Connecting");
+        Texter.updateText?.Invoke(loadingText, "Connecting");
         base.Start();
 
         localIp = LocalIPAddress();
@@ -81,11 +81,11 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
         if (!NetworkManager.Instance.isNetworkActive)
         {
             StopDiscovery();
-            Texter.updateText?.Invoke(loadingText, null, "Hosting");
+            Texter.updateText?.Invoke(loadingText, "Hosting");
 
             yield return new WaitForSeconds(1);
 
-            Texter.updateText?.Invoke(loadingText, null, "");
+            Texter.updateText?.Invoke(loadingText, "");
             Texter.onOutComplete += () =>
             {
                 onDiscoveryTimeOut?.Invoke();
@@ -101,7 +101,7 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
         }
         catch (SocketException exception)
         {
-            Texter.updateText?.Invoke(loadingText, null, "Server already exists");
+            Texter.updateText?.Invoke(loadingText, "Server already exists");
             Debug.LogWarning($"Caught {exception.Message}");
         }
     }

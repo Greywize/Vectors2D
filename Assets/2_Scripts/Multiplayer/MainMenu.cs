@@ -17,9 +17,9 @@ public class MainMenu : MonoBehaviour
     InputAction cancel;
 
     [Header("UI Elements")]
-    [SerializeField] TweenController mainTweenController;
-    [SerializeField] TweenController loadingTweenController;
-    [SerializeField] TweenController loadingBarTweenController;
+    [SerializeField] MultiTween mainTweenController;
+    [SerializeField] MultiTween loadingTweenController;
+    [SerializeField] MultiTween loadingBarTweenController;
     [SerializeField] TMP_InputField nameField;
     [SerializeField] TMP_InputField addressField;
 

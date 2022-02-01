@@ -1,10 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Tween
 {
+    public TMPro.TMP_Text textObject;
+    public RectTransform rectTransform;
+    public GameObject gameObject;
+    public Light2D light2D;
+    public Image image;
+
     public enum TweenMode
     {
         CanvasAlpha,
@@ -27,6 +35,9 @@ public class Tween
     [Min(0)]
     [Tooltip("How long we delay the tween before starting (In seconds)")]
     public float delay;
+
+    public delegate void TweenEvent();
+    public TweenEvent onComplete;
 
     // Variables repurposed for each tween mode
     // public float value;
@@ -65,5 +76,25 @@ public class Tween
     // Logic flags
     public bool uniformScale;
     public bool completed;
-    public bool hideOnComplete;
+
+    public void CallbackImageColor(Color color)
+    {
+        if (image)
+            image.color = color;
+    }
+    public void CallbackTextColor(Color color)
+    {
+        if (textObject)
+            textObject.color = color;
+    }
+    public void CallbackLight2DColor(Color color)
+    {
+        if (light2D)
+            light2D.color = color;
+    }
+    public void CallbackLight2DIntensity(float intensity)
+    {
+        if (light2D)
+            light2D.intensity = intensity;
+    }
 }

@@ -11,7 +11,7 @@ public class TweenButton : MonoBehaviour
     public void Tween()
     {
         // First ensure no tweens are already running
-        LeanTween.cancel(gameObject);
+        LeanTween.Cancel(gameObject);
 
         transform.localScale = Vector3.one;
 

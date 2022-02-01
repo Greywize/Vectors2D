@@ -28,7 +28,7 @@ public class GeneralCameraShake : MonoBehaviour {
 
 		LeanTween.moveY(avatarBig, height, 1f).setEase(LeanTweenType.easeInOutQuad).setOnComplete( ()=>{
 			LeanTween.moveY(avatarBig, 0f, 0.27f).setEase(LeanTweenType.easeInQuad).setOnComplete( ()=>{
-				LeanTween.cancel(gameObject);
+				LeanTween.Cancel(gameObject);
 
 				/**************
 				* Camera Shake

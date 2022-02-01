@@ -6,13 +6,13 @@ public class TweenPropertyDrawer : PropertyDrawer
 {
     int lines;
 
-    SerializedProperty mode, ease, time, delay, alpha, scale, rotation, sizeVector, scaleVector, positionVector, color, lightIntensity, lightColor, value, textColor, uniformScale, hideOnComplete;
+    SerializedProperty mode, ease, time, delay, alpha, scale, rotation, sizeVector, scaleVector, positionVector, color, lightIntensity, lightColor, value, textColor, uniformScale;
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         mode = property.FindPropertyRelative("mode");
 
-        if (mode.intValue == 1 || mode.intValue == 6)
+        if (mode.intValue == 1 || mode.intValue == 7)
             lines = 7;
         else
             lines = 6;
@@ -40,7 +40,6 @@ public class TweenPropertyDrawer : PropertyDrawer
         rotation = property.FindPropertyRelative("rotation");
 
         uniformScale = property.FindPropertyRelative("uniformScale");
-        hideOnComplete = property.FindPropertyRelative("hideOnComplete");
 
         EditorGUI.BeginProperty(position, label, property);
 
@@ -52,15 +51,15 @@ public class TweenPropertyDrawer : PropertyDrawer
         Rect lineSixRect = new Rect(position.x, position.y + (position.height / lines) * 5, position.width, position.height / lines);
         Rect lineSevenRect = new Rect(position.x, position.y + (position.height / lines) * 6, position.width, position.height / lines);
 
+        EditorGUI.LabelField(lineOneRect, "Tween");
         // Store editor indent settings
         int indent = EditorGUI.indentLevel;
         EditorGUI.indentLevel = 1;
 
-        EditorGUI.PropertyField(lineOneRect, mode, new GUIContent("Mode"));
-        EditorGUI.PropertyField(lineTwoRect, ease, new GUIContent("Ease"));
-        EditorGUI.PropertyField(lineThreeRect, time, new GUIContent("Time"));
-        EditorGUI.PropertyField(lineFourRect, delay, new GUIContent("Delay"));
-        EditorGUI.PropertyField(lineFiveRect, hideOnComplete, new GUIContent("Hide on complete"));
+        EditorGUI.PropertyField(lineTwoRect, mode, new GUIContent("Mode"));
+        EditorGUI.PropertyField(lineThreeRect, ease, new GUIContent("Ease"));
+        EditorGUI.PropertyField(lineFourRect, time, new GUIContent("Time"));
+        EditorGUI.PropertyField(lineFiveRect, delay, new GUIContent("Delay"));
         switch (mode.intValue)
         {
             case 0: // Alpha
