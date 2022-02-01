@@ -5,21 +5,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
-using static TweenController;
 
 namespace MatchMade
 {
-    // Contains functions dedicated to handling and moving between CanvasInterfaces
-    // This project doesn't utilise them, so some code is commented out
     public class InterfaceManager : MonoBehaviour
     {
         public static InterfaceManager Instance;
-
         public bool dontDestroyOnLoad = false;
-
-        [Header("Transition")]
-        [SerializeField] TweenController transitionTween;
-        [SerializeField] TMP_Text transitionMessageText;
 
         InterfaceNode current;
 
@@ -40,8 +32,8 @@ namespace MatchMade
             current = FindFirstActive();
         }
 
-        #region Transitioning
-        // Returns the first active canvas found amongst all CanvasInterfaces 
+        #region Navigating
+        // Returns the first active canvas found amongst all Interface Nodes 
         public InterfaceNode FindFirstActive()
         {
             foreach (InterfaceNode canvasInterface in FindObjectsOfType<InterfaceNode>())
@@ -60,35 +52,9 @@ namespace MatchMade
         {
             current = newCurrent;
         }
-        public TweenStage FadeOut()
-        {
-            transitionTween.BeginStage(0);
-
-            return transitionTween.stages[0];
-        }
-        public TweenStage FadeIn()
-        {
-            transitionTween.BeginStage(1);
-
-            return transitionTween.stages[1];
-        }
-        public TweenStage FadeHalf()
-        {
-            transitionTween.BeginStage(2);
-
-            return transitionTween.stages[2];
-        }
-        public void SetTransitionMessage(string message)
-        {
-            transitionMessageText.text = message;
-        }
         #endregion
 
-        #region Buttons 
-        public void Disconnect()
-        {
-            // NetworkManager.Instance.Disconnect();
-        }
+        #region Application 
         public void Quit()
         {
             Application.Quit();

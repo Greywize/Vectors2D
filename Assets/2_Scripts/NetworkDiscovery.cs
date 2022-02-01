@@ -5,6 +5,7 @@ using Mirror.Discovery;
 using Mirror;
 using System.Net;
 using System.Net.Sockets;
+using MatchMade;
 
 public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
 {
@@ -12,6 +13,9 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
     string localIp;
     [SerializeField] [Range(0, 10)]
     int discoveryTimeOut = 5;
+
+    [SerializeField]
+    TMPro.TMP_Text loadingText;
 
     public delegate void DiscoveryEvent();
     public DiscoveryEvent onDiscoveryTimeOut;
@@ -29,7 +33,7 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
 
     public override void Start()
     {
-        TextUpdater.updateText?.Invoke("Connecting");
+        Texter.updateText?.Invoke(loadingText, null, "Connecting");
         base.Start();
 
         localIp = LocalIPAddress();
@@ -76,11 +80,16 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
 
         if (!NetworkManager.Instance.isNetworkActive)
         {
-            TextUpdater.updateText?.Invoke("Hosting");
+            StopDiscovery();
+            Texter.updateText?.Invoke(loadingText, null, "Hosting");
+
             yield return new WaitForSeconds(1);
 
-            StopDiscovery();
-            onDiscoveryTimeOut?.Invoke();
+            Texter.updateText?.Invoke(loadingText, null, "");
+            Texter.onOutComplete += () =>
+            {
+                onDiscoveryTimeOut?.Invoke();
+            };
         }
     }
 
@@ -92,7 +101,8 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
         }
         catch (SocketException exception)
         {
-            TextUpdater.updateText?.Invoke("Server already exists");
+            Texter.updateText?.Invoke(loadingText, null, "Server already exists");
+            Debug.LogWarning($"Caught {exception.Message}");
         }
     }
 }

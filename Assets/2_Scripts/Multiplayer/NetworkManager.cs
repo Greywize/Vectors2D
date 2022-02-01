@@ -90,16 +90,6 @@ public class NetworkManager : Mirror.NetworkManager
     {
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Connected to {networkAddress} as {mode}.");
-
-        switch (mode)
-        {
-            case NetworkManagerMode.ClientOnly:
-                TextUpdater.updateText?.Invoke($"Connected as client");
-                break;
-            case NetworkManagerMode.Host:
-                TextUpdater.updateText?.Invoke($"Connected as host");
-                break;
-        }
     }
     // Called on the client when disconnected from server
     public override void OnClientDisconnect(NetworkConnection conn)

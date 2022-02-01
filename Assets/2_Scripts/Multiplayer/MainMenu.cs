@@ -63,7 +63,7 @@ public class MainMenu : MonoBehaviour
 
         StopAllCoroutines();
 
-        InterfaceManager.Instance.SetTransitionMessage("Connecting");
+        // InterfaceManager.Instance.SetTransitionMessage("Connecting");
 
         loadingTweenController.BeginStage(1);
         loadingBarTweenController.BeginStage(0);
@@ -87,7 +87,7 @@ public class MainMenu : MonoBehaviour
     {
         NetworkManager.Instance.StopClient();
         yield return new WaitForSeconds(10);
-        InterfaceManager.Instance.SetTransitionMessage("Failed to connect :<");
+        // InterfaceManager.Instance.SetTransitionMessage("Failed to connect :<");
         loadingBarTweenController.BeginStage(1);
         yield return new WaitForSeconds(1);
         Cancel();
