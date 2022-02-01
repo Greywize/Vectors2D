@@ -11,6 +11,7 @@ public class Tween
     public RectTransform rectTransform;
     public GameObject gameObject;
     public Light2D light2D;
+    public Camera cam;
     public Image image;
 
     public enum TweenMode
@@ -23,7 +24,8 @@ public class Tween
         Position,
         Rotation,
         Light,
-        Value,
+        CameraSize,
+        CustomValue,
     }
     // Determines what we tween, such as the alpha or scale of the object
     public TweenMode mode;
@@ -58,6 +60,9 @@ public class Tween
     [Min(0)]
     [Tooltip("Tweens the intesity of a light")]
     public float lightIntensity;
+    [Min(0)]
+    [Tooltip("Tweens the size / fov of a camera")]
+    public float cameraSize;
     [Tooltip("Tweens the color of a light")]
     public Color color = Color.white;
     [Tooltip("Tweens the color of the object")]
@@ -96,5 +101,10 @@ public class Tween
     {
         if (light2D)
             light2D.intensity = intensity;
+    }
+    public void CallbackCameraSize(float size)
+    {
+        if (cam)
+            cam.orthographicSize = size;
     }
 }

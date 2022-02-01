@@ -13,6 +13,7 @@ public class BinaryTween : MonoBehaviour
     GameObject obj;
     TMP_Text textObject;
     Light2D light2D;
+    Camera cam;
     Image image;
 
     [Header("Tween In")]
@@ -27,6 +28,7 @@ public class BinaryTween : MonoBehaviour
         obj = GetComponent<GameObject>();
         textObject = GetComponent<TMP_Text>();
         light2D = GetComponent<Light2D>();
+        cam = GetComponent<Camera>();
         image = GetComponent<Image>();
     }
 
@@ -58,7 +60,10 @@ public class BinaryTween : MonoBehaviour
             case Tween.TweenMode.Light:
                 LTWrapper.Tween(light2D, tweenIn);
                 break;
-            case Tween.TweenMode.Value:
+            case Tween.TweenMode.CameraSize:
+                LTWrapper.Tween(cam, tweenIn);
+                break;
+            case Tween.TweenMode.CustomValue:
                 Debug.LogWarning($"Cannot tween a custom value with the BinaryTween component on {gameObject.name}");
                 break;
         }
@@ -91,7 +96,10 @@ public class BinaryTween : MonoBehaviour
             case Tween.TweenMode.Light:
                 LTWrapper.Tween(light2D, tweenOut);
                 break;
-            case Tween.TweenMode.Value:
+            case Tween.TweenMode.CameraSize:
+                LTWrapper.Tween(cam, tweenOut);
+                break;
+            case Tween.TweenMode.CustomValue:
                 Debug.LogWarning($"Cannot tween a custom value with the BinaryTween component on {gameObject.name}");
                 break;
         }

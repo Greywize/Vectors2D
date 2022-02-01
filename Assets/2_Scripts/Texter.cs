@@ -34,11 +34,11 @@ public class Texter : MonoBehaviour
         LTWrapper.Tween(textObject, TextWhiteOut).onComplete += () => {
             // Tween out finished, invoke delegate
             onOutComplete?.Invoke();
-
             // Change text
             textObject.text = message;
-
+            // Tween back in
             LTWrapper.Tween(textObject, TextWhiteIn).onComplete += () => {
+                // Tween in finished, invoke delegate
                 onInComplete?.Invoke();
             };
         };

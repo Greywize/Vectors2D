@@ -25,12 +25,13 @@ public class MultiTween : MonoBehaviour
     private CanvasGroup canvasGroup;
     private TMP_Text textObject;
     private Light2D light2D;
+    private Camera cam;
     private Image image;
 
     // Variables
     [Tooltip("Begins tweening on play")]
     public bool beginSetOnStart;
-    public int startSet;
+    public int startingSet;
     [Tooltip("Continue looping all tween sets")]
     public bool loop;
     [Tooltip("Plays all sets once")]
@@ -43,7 +44,7 @@ public class MultiTween : MonoBehaviour
     private void Start()
     {
         if (beginSetOnStart)
-            BeginStage(startSet);
+            BeginStage(startingSet);
     }
     // Does the same thing as BeginStage but returns nothing, makeing it so UI can call it
     public void QueueStage(int stage)
@@ -107,6 +108,11 @@ public class MultiTween : MonoBehaviour
                     if (!light2D)
                         light2D = GetComponent<Light2D>();
                     LTWrapper.Tween(light2D, tween).onComplete += () => { OnAnyTweenComplete(tween); };
+                    break;
+                case Tween.TweenMode.CameraSize:
+                    if (!cam)
+                        cam = GetComponent<Camera>();
+                    LTWrapper.Tween(cam, tween).onComplete += () => { OnAnyTweenComplete(tween); };
                     break;
                 case Tween.TweenMode.Position:
                     LTWrapper.Tween(gameObject, tween).onComplete += () => { OnAnyTweenComplete(tween); };

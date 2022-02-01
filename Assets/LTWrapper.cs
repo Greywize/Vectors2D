@@ -62,6 +62,11 @@ public class LTWrapper : MonoBehaviour
         TweenLightIntensity(light2D, tween);
         return tween;
     }
+    public static Tween Tween(Camera camera, Tween tween)
+    {
+        TweenCameraSize(camera, tween);
+        return tween;
+    }
     public static Tween Tween(ref float value, Tween tween)
     {
         TweenFloat(ref value, tween);
@@ -261,6 +266,24 @@ public class LTWrapper : MonoBehaviour
             .setDelay(tween.delay)
             .setEase(tween.ease)
             .setOnComplete(() => { tween.onComplete?.Invoke(); });
+        return tween;
+    }
+    private static Tween TweenCameraSize(Camera cam, Tween tween)
+    {
+        if (!tween.cam)
+            tween.cam = cam;
+
+        if (tween.time <= 0)
+        {
+            cam.orthographicSize = tween.cameraSize;
+            return tween;
+        }
+
+        LeanTween.value(cam.gameObject, tween.CallbackCameraSize, cam.orthographicSize, tween.cameraSize, tween.time)
+            .setDelay(tween.delay)
+            .setEase(tween.ease)
+            .setOnComplete(() => { tween.onComplete?.Invoke(); });
+
         return tween;
     }
     private static Tween TweenFloat(ref float value, Tween tween)

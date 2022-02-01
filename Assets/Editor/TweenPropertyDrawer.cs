@@ -6,7 +6,7 @@ public class TweenPropertyDrawer : PropertyDrawer
 {
     int lines;
 
-    SerializedProperty mode, ease, time, delay, alpha, scale, rotation, sizeVector, scaleVector, positionVector, color, lightIntensity, lightColor, value, textColor, uniformScale;
+    SerializedProperty mode, ease, time, delay, alpha, scale, rotation, sizeVector, scaleVector, positionVector, color, lightIntensity, lightColor, value, textColor, uniformScale, cameraSize;
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
@@ -38,6 +38,7 @@ public class TweenPropertyDrawer : PropertyDrawer
         scaleVector = property.FindPropertyRelative("scaleVector");
         positionVector = property.FindPropertyRelative("positionVector");
         rotation = property.FindPropertyRelative("rotation");
+        cameraSize = property.FindPropertyRelative("cameraSize");
 
         uniformScale = property.FindPropertyRelative("uniformScale");
 
@@ -91,7 +92,10 @@ public class TweenPropertyDrawer : PropertyDrawer
                 EditorGUI.PropertyField(lineSixRect, lightIntensity, new GUIContent("Intensity"));
                 EditorGUI.PropertyField(lineSevenRect, lightColor, new GUIContent("Color"));
                 break;
-            case 8: // Value
+            case 8: // Camera Size
+                EditorGUI.PropertyField(lineSixRect, cameraSize, new GUIContent("Camera Size"));
+                break;
+            case 9: // Custom Value
                 EditorGUI.PropertyField(lineSixRect, value, new GUIContent("Custom Value"));
                 break;
         }
