@@ -89,7 +89,7 @@ public class LTWrapper : MonoBehaviour
         LeanTween.alphaCanvas(canvasGroup, tween.alpha, tween.time)
                     .setDelay(tween.delay)
                     .setEase(tween.ease)
-            .setOnComplete(() => { tween.onComplete?.Invoke(); });
+                    .setOnComplete(() => { tween.onComplete?.Invoke(); });
 
         return tween;
     }

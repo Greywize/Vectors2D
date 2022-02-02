@@ -6,16 +6,16 @@ public class TweenPropertyDrawer : PropertyDrawer
 {
     int lines;
 
-    SerializedProperty mode, ease, time, delay, alpha, scale, rotation, sizeVector, scaleVector, positionVector, color, lightIntensity, lightColor, value, textColor, uniformScale, cameraSize;
+    SerializedProperty mode, ease, time, delay, alpha, scale, rotation, sizeVector, scaleVector, positionVector, color, lightIntensity, lightColor, value, textColor, uniformScale, cameraSize, continuous;
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         mode = property.FindPropertyRelative("mode");
 
         if (mode.intValue == 1 || mode.intValue == 7)
-            lines = 7;
+            lines = 8;
         else
-            lines = 6;
+            lines = 7;
 
         return EditorGUI.GetPropertyHeight(property, label, false) * lines;
     }
@@ -41,6 +41,7 @@ public class TweenPropertyDrawer : PropertyDrawer
         cameraSize = property.FindPropertyRelative("cameraSize");
 
         uniformScale = property.FindPropertyRelative("uniformScale");
+        continuous = property.FindPropertyRelative("continuous");
 
         EditorGUI.BeginProperty(position, label, property);
 
@@ -51,6 +52,7 @@ public class TweenPropertyDrawer : PropertyDrawer
         Rect lineFiveRect = new Rect(position.x, position.y + (position.height / lines) * 4, position.width, position.height / lines);
         Rect lineSixRect = new Rect(position.x, position.y + (position.height / lines) * 5, position.width, position.height / lines);
         Rect lineSevenRect = new Rect(position.x, position.y + (position.height / lines) * 6, position.width, position.height / lines);
+        Rect lineEightRect = new Rect(position.x, position.y + (position.height / lines) * 7, position.width, position.height / lines);
 
         EditorGUI.LabelField(lineOneRect, "Tween");
         // Store editor indent settings
@@ -61,42 +63,43 @@ public class TweenPropertyDrawer : PropertyDrawer
         EditorGUI.PropertyField(lineThreeRect, ease, new GUIContent("Ease"));
         EditorGUI.PropertyField(lineFourRect, time, new GUIContent("Time"));
         EditorGUI.PropertyField(lineFiveRect, delay, new GUIContent("Delay"));
+        EditorGUI.PropertyField(lineSixRect, continuous, new GUIContent("Continous"));
         switch (mode.intValue)
         {
             case 0: // Alpha
-                EditorGUI.PropertyField(lineSixRect, alpha, new GUIContent("Alpha"));
+                EditorGUI.PropertyField(lineSevenRect, alpha, new GUIContent("Alpha"));
                 break;
             case 1: // Scale
-                EditorGUI.PropertyField(lineSixRect, uniformScale);
+                EditorGUI.PropertyField(lineSevenRect, uniformScale);
                 if (uniformScale.boolValue) // Show float value for scale
-                    EditorGUI.PropertyField(lineSevenRect, scale, new GUIContent("Scale"));
+                    EditorGUI.PropertyField(lineEightRect, scale, new GUIContent("Scale"));
                 else                        // Show vector value for scale
-                    EditorGUI.PropertyField(lineSevenRect, scaleVector, new GUIContent("Scale"));
+                    EditorGUI.PropertyField(lineEightRect, scaleVector, new GUIContent("Scale"));
                 break;
             case 2: // Size
-                EditorGUI.PropertyField(lineSixRect, sizeVector, new GUIContent("Size"));
+                EditorGUI.PropertyField(lineSevenRect, sizeVector, new GUIContent("Size"));
                 break;
             case 3: // Color
-                EditorGUI.PropertyField(lineSixRect, color, new GUIContent("Color"));
+                EditorGUI.PropertyField(lineSevenRect, color, new GUIContent("Color"));
                 break;
             case 4: // Text Color
-                EditorGUI.PropertyField(lineSixRect, textColor, new GUIContent("Text Color"));
+                EditorGUI.PropertyField(lineSevenRect, textColor, new GUIContent("Text Color"));
                 break;
             case 5: // Position
-                EditorGUI.PropertyField(lineSixRect, positionVector, new GUIContent("Position"));
+                EditorGUI.PropertyField(lineSevenRect, positionVector, new GUIContent("Position"));
                 break;
             case 6: // Rotation
-                EditorGUI.PropertyField(lineSixRect, rotation, new GUIContent("Rotation"));
+                EditorGUI.PropertyField(lineSevenRect, rotation, new GUIContent("Rotation"));
                 break;
             case 7: // Light
-                EditorGUI.PropertyField(lineSixRect, lightIntensity, new GUIContent("Intensity"));
-                EditorGUI.PropertyField(lineSevenRect, lightColor, new GUIContent("Color"));
+                EditorGUI.PropertyField(lineSevenRect, lightIntensity, new GUIContent("Intensity"));
+                EditorGUI.PropertyField(lineEightRect, lightColor, new GUIContent("Color"));
                 break;
             case 8: // Camera Size
-                EditorGUI.PropertyField(lineSixRect, cameraSize, new GUIContent("Camera Size"));
+                EditorGUI.PropertyField(lineSevenRect, cameraSize, new GUIContent("Camera Size"));
                 break;
             case 9: // Custom Value
-                EditorGUI.PropertyField(lineSixRect, value, new GUIContent("Custom Value"));
+                EditorGUI.PropertyField(lineSevenRect, value, new GUIContent("Custom Value"));
                 break;
         }
 

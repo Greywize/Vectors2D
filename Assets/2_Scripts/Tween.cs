@@ -80,6 +80,7 @@ public class Tween
 
     // Logic flags
     public bool uniformScale;
+    public bool continuous;
     public bool completed;
 
     public void CallbackImageColor(Color color)
