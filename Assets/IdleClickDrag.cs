@@ -11,11 +11,15 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     RectTransform rectTransform;
 
     InputAction mouseInput;
+    [SerializeField]
     Vector2 mousePosition;
+    Vector2 grabPosition;
+    [SerializeField]
     Vector2 pivotOffset;
-    Vector2 grabPoint;
+    [SerializeField]
+    Vector2 adjustedPoint;
     float distance;
-    Vector2 upDirectionOnGrab;
+    Vector2 grabOrientation;
 
     [SerializeField] [Min(0)]
     [Tooltip("The minimum distance away from the pointer the object needs to be before elasticity kicks in")]
@@ -56,30 +60,27 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         distance = Vector2.Distance(mousePosition, transform.position);
         if (dragging && distance > minDistance)
         {
-            grabPoint = (Vector2)transform.position + pivotOffset;
-            Debug.DrawLine(transform.position, grabPoint);
-            
-            angle = Vector2.SignedAngle(upDirectionOnGrab, transform.up);
-            float angleSinceGrab = angle * Mathf.Deg2Rad;
-            
-            Vector2 adjustedPoint = new Vector2(grabPoint.x * Mathf.Cos(angleSinceGrab) - grabPoint.y * Mathf.Sin(angleSinceGrab),
-                                        grabPoint.x * Mathf.Sin(angleSinceGrab) + grabPoint.y * Mathf.Cos(angleSinceGrab));
-            Debug.DrawLine(transform.position, adjustedPoint, Color.red);
+            angle = Vector2.SignedAngle(grabOrientation, transform.up);
 
-            Vector2 dragDirection = adjustedPoint + mousePosition;
-            rigidBody.velocity += dragDirection * elasticity;
+            Vector2 offset = (grabPosition - (Vector2)transform.position);
+            Debug.DrawLine(transform.position, (Vector2)transform.position + offset);
+            offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
+            Debug.DrawLine(transform.position, (Vector2)transform.position + offset, Color.cyan);
+
+            /*Vector2 dragDirection = adjustedPoint + mousePosition;
+            rigidBody.velocity += dragDirection * elasticity;*/
 
             // T = f * r * sin(a)
             // f - dragDirection
             // r - Distance vector between adjustedGrabPoint & position
             // a - Angle between r & f
 
-            f = dragDirection;
+            /*f = dragDirection;
             r = adjustedPoint - (Vector2)transform.position;
             a = Mathf.Sin(Vector2.Angle(r, f));
             torque = r.magnitude * f.magnitude * a;
 
-            rigidBody.AddTorque(torque);
+            rigidBody.AddTorque(torque);*/
 
             /*// Get the closest point to the perimeter of the maxDistance radius
             Vector3 distanceToPerimiter = dragDirection.normalized * (distance - maxDistance);
@@ -106,8 +107,10 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         dragging = true;
 
-        pivotOffset = mousePosition - (Vector2)transform.position;
-        upDirectionOnGrab = transform.up;
+        // Position of the mouse at time of pointer down
+        grabPosition = mousePosition;
+        // Orientation of the object at time of pointer down
+        grabOrientation = transform.up;
     }
     public void OnPointerUp(PointerEventData eventData)
     {
