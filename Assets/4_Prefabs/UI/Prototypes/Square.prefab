@@ -181,4 +181,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minDistance: 0.1
   maxDistance: 10
-  elasticity: 3
+  elasticity: 1

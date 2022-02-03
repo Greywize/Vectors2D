@@ -155,7 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minDistance: 0.1
   maxDistance: 10
-  elasticity: 3
+  elasticity: 1
 --- !u!60 &1474882877717510235
 PolygonCollider2D:
   m_ObjectHideFlags: 0
