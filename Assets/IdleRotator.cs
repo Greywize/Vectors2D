@@ -8,21 +8,22 @@ public class IdleRotator : MonoBehaviour
     RectTransform rectTransform;
 
     [SerializeField]
-    float currentTorque;
-    [SerializeField]
     [Tooltip("The time it takes for one revolution (in seconds)")]
-    float rps = 20;
+    float rps = 1;
 
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         rectTransform = GetComponent<RectTransform>();
-
-        TweenRotation();
     }
 
-    private void TweenRotation()
+    private void FixedUpdate()
     {
-        LeanTween.rotateAroundLocal(rectTransform, new Vector3(0, 0, 1), 360, rps).setRepeat(-1);
+        Rotate();
+    }
+
+    private void Rotate()
+    {
+        rigidBody.AddTorque(-rps);
     }
 }

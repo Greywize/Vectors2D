@@ -62,25 +62,28 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         {
             angle = Vector2.SignedAngle(grabOrientation, transform.up);
 
-            Vector2 offset = (grabPosition - (Vector2)transform.position);
-            Debug.DrawLine(transform.position, (Vector2)transform.position + offset);
-            offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
-            Debug.DrawLine(transform.position, (Vector2)transform.position + offset, Color.cyan);
+            Vector2 offset = (grabPosition - (Vector2)transform.position) + (Vector2)transform.position;
+            offset = Quaternion.AngleAxis(angle, transform.forward) * offset;
+            Debug.DrawLine(transform.position, offset, Color.red);
+            Debug.DrawRay(offset, offset, Color.blue);
 
-            /*Vector2 dragDirection = adjustedPoint + mousePosition;
-            rigidBody.velocity += dragDirection * elasticity;*/
+            Vector2 pull = mousePosition - (offset - (Vector2)transform.position);
+            Debug.DrawRay(pull, mousePosition, Color.red);
 
+            rigidBody.velocity += pull * elasticity;
+
+            /*
             // T = f * r * sin(a)
             // f - dragDirection
             // r - Distance vector between adjustedGrabPoint & position
             // a - Angle between r & f
-
-            /*f = dragDirection;
+            f = dragDirection;
             r = adjustedPoint - (Vector2)transform.position;
             a = Mathf.Sin(Vector2.Angle(r, f));
             torque = r.magnitude * f.magnitude * a;
 
-            rigidBody.AddTorque(torque);*/
+            rigidBody.AddTorque(torque);
+            */
 
             /*// Get the closest point to the perimeter of the maxDistance radius
             Vector3 distanceToPerimiter = dragDirection.normalized * (distance - maxDistance);
