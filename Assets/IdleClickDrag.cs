@@ -26,6 +26,17 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] [Min(0)]
     float elasticity;
 
+    [SerializeField]
+    float torque;
+    [SerializeField]
+    Vector2 f;
+    [SerializeField]
+    Vector2 r;
+    [SerializeField]
+    float a;
+    [SerializeField]
+    float angle;
+
     private bool dragging;
 
     private void Start()
@@ -46,37 +57,44 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         if (dragging && distance > minDistance)
         {
             grabPoint = (Vector2)transform.position + pivotOffset;
-            float angle = Vector2.Angle(upDirectionOnGrab, transform.up) * Mathf.Deg2Rad;
+            Debug.DrawLine(transform.position, grabPoint);
+            
+            angle = Vector2.SignedAngle(upDirectionOnGrab, transform.up);
+            float angleSinceGrab = angle * Mathf.Deg2Rad;
+            
+            Vector2 adjustedPoint = new Vector2(grabPoint.x * Mathf.Cos(angleSinceGrab) - grabPoint.y * Mathf.Sin(angleSinceGrab),
+                                        grabPoint.x * Mathf.Sin(angleSinceGrab) + grabPoint.y * Mathf.Cos(angleSinceGrab));
+            Debug.DrawLine(transform.position, adjustedPoint, Color.red);
 
-            Vector2 adjustedGrabPoint = grabPoint - (Vector2)transform.position;
-            adjustedGrabPoint = (Vector2)transform.position + new Vector2(adjustedGrabPoint.x * Mathf.Cos(angle) - adjustedGrabPoint.y * Mathf.Sin(angle),
-                                            adjustedGrabPoint.x * Mathf.Sin(angle) + adjustedGrabPoint.y * Mathf.Cos(angle));
-
-            Vector2 dragDirection = mousePosition - adjustedGrabPoint;
+            Vector2 dragDirection = adjustedPoint + mousePosition;
             rigidBody.velocity += dragDirection * elasticity;
 
-            // Get the closest point to the perimeter of the maxDistance radius
+            // T = f * r * sin(a)
+            // f - dragDirection
+            // r - Distance vector between adjustedGrabPoint & position
+            // a - Angle between r & f
+
+            f = dragDirection;
+            r = adjustedPoint - (Vector2)transform.position;
+            a = Mathf.Sin(Vector2.Angle(r, f));
+            torque = r.magnitude * f.magnitude * a;
+
+            rigidBody.AddTorque(torque);
+
+            /*// Get the closest point to the perimeter of the maxDistance radius
             Vector3 distanceToPerimiter = dragDirection.normalized * (distance - maxDistance);
             if (distance > maxDistance)
             {
                 // Correct our position by adding distanceToPerimiter to our position
                 transform.position += distanceToPerimiter;
                 // Maintain velocity of correction movement
-                rigidBody.velocity += (Vector2)dragDirection * distanceToPerimiter.magnitude;
+                rigidBody.velocity += dragDirection * distanceToPerimiter.magnitude;
 
                 float dot = Vector2.Dot(rigidBody.velocity, -dragDirection.normalized);
                 Vector2 component = -dragDirection.normalized * dot;
                 if (dot > 0)
                     rigidBody.velocity -= component;
-            }
-
-            Vector2 r = adjustedGrabPoint - (Vector2)transform.position;
-
-            float torque = r.magnitude * dragDirection.magnitude * Mathf.Sin(r.magnitude);
-
-            Debug.DrawLine(adjustedGrabPoint, mousePosition, Color.white);
-
-            rigidBody.AddTorque(torque);
+            }*/
         }
     }
 
