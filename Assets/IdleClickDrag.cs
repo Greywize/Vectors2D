@@ -73,7 +73,7 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             rigidBody2D.AddTorque(torque * elasticity);
 
             // Calculate force
-            Vector2 pullForce = mousePosition - (Vector2)transform.position;
+            Vector2 pullForce = mousePosition + localGrabPoint;
             rigidBody2D.velocity += pullForce * elasticity;
 
             /*// Get the closest point to the perimeter of the maxDistance radius
