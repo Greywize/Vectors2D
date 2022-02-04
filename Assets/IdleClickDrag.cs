@@ -7,19 +7,14 @@ using UnityEngine.InputSystem;
 
 public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IInitializePotentialDragHandler
 {
-    Rigidbody2D rigidBody;
+    Rigidbody2D rigidBody2D;
     RectTransform rectTransform;
 
     InputAction mouseInput;
-    [SerializeField]
     Vector2 mousePosition;
-    Vector2 grabPosition;
-    [SerializeField]
-    Vector2 pivotOffset;
-    [SerializeField]
-    Vector2 adjustedPoint;
+    Vector2 globalGrabPoint;
+    Vector2 grabOrientation; 
     float distance;
-    Vector2 grabOrientation;
 
     [SerializeField] [Min(0)]
     [Tooltip("The minimum distance away from the pointer the object needs to be before elasticity kicks in")]
@@ -33,19 +28,17 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField]
     float torque;
     [SerializeField]
-    Vector2 f;
+    Vector2 pullDirection;
     [SerializeField]
-    Vector2 r;
+    Vector2 localGrabPoint;
     [SerializeField]
-    float a;
-    [SerializeField]
-    float angle;
+    float sin;
 
     private bool dragging;
 
     private void Start()
     {
-        rigidBody = GetComponent<Rigidbody2D>();
+        rigidBody2D = GetComponent<Rigidbody2D>();
         rectTransform = GetComponent<RectTransform>();
 
         mouseInput = InputManager.interfaceActions.FindAction("Point");
@@ -58,32 +51,30 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
         distance = Vector2.Distance(mousePosition, transform.position);
+
         if (dragging && distance > minDistance)
         {
-            angle = Vector2.SignedAngle(grabOrientation, transform.up);
+            // The angle between our starting and current orientation
+            float angle = Vector2.SignedAngle(grabOrientation, transform.up);
 
-            Vector2 offset = (grabPosition - (Vector2)transform.position) + (Vector2)transform.position;
-            offset = Quaternion.AngleAxis(angle, transform.forward) * offset;
-            Debug.DrawLine(transform.position, offset, Color.red);
-            Debug.DrawRay(offset, offset, Color.blue);
+            // Offset the grab position back to 0,0
+            localGrabPoint = globalGrabPoint - (Vector2)transform.position;
+            // Rotate offset by how much our object has rotated since the last frame
+            localGrabPoint = (Quaternion.AngleAxis(angle, Vector3.forward) * localGrabPoint);
+            // Calculate force from grab point to mouse position, accounting for our offset being at 0,0
+            pullDirection = localGrabPoint + (mousePosition - (Vector2)transform.position);
 
-            Vector2 pull = mousePosition - (offset - (Vector2)transform.position);
-            Debug.DrawRay(pull, mousePosition, Color.red);
+            // Sin of the distance between axis point and force point
+            sin = Vector2.SignedAngle(localGrabPoint, pullDirection);
 
-            rigidBody.velocity += pull * elasticity;
+            // Calculate torque
+            // T = |force| * |radius| * sin(angle between f & r)
+            torque = pullDirection.magnitude * localGrabPoint.magnitude * sin;
+            rigidBody2D.AddTorque(torque * elasticity);
 
-            /*
-            // T = f * r * sin(a)
-            // f - dragDirection
-            // r - Distance vector between adjustedGrabPoint & position
-            // a - Angle between r & f
-            f = dragDirection;
-            r = adjustedPoint - (Vector2)transform.position;
-            a = Mathf.Sin(Vector2.Angle(r, f));
-            torque = r.magnitude * f.magnitude * a;
-
-            rigidBody.AddTorque(torque);
-            */
+            // Calculate force
+            Vector2 pullForce = mousePosition - (Vector2)transform.position;
+            rigidBody2D.velocity += pullForce * elasticity;
 
             /*// Get the closest point to the perimeter of the maxDistance radius
             Vector3 distanceToPerimiter = dragDirection.normalized * (distance - maxDistance);
@@ -111,7 +102,7 @@ public class IdleClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         dragging = true;
 
         // Position of the mouse at time of pointer down
-        grabPosition = mousePosition;
+        globalGrabPoint = mousePosition;
         // Orientation of the object at time of pointer down
         grabOrientation = transform.up;
     }
