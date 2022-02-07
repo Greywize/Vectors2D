@@ -44,6 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Heads Up Display
+    uniqueID: 3427202537
+    locked: 0
   - name: Foreground
     uniqueID: 911703665
     locked: 0

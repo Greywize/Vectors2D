@@ -10,6 +10,10 @@ namespace MatchMade
 {
     public class InterfaceManager : MonoBehaviour
     {
+        [Header("Cursor")]
+        public Texture2D cursorTexture;
+        public CursorMode cursorMode = CursorMode.Auto;
+
         public static InterfaceManager Instance;
         public bool dontDestroyOnLoad = false;
 
@@ -24,6 +28,8 @@ namespace MatchMade
 
             if (dontDestroyOnLoad)
                 DontDestroyOnLoad(gameObject);
+
+            SetCursor(cursorTexture);
 
             Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
         }
@@ -53,6 +59,12 @@ namespace MatchMade
             current = newCurrent;
         }
         #endregion
+
+        public void SetCursor(Texture2D texture)
+        {
+            Vector2 hotSpot = new Vector2(texture.width / 2, texture.height / 2);
+            Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+        }
 
         #region Application 
         public void Quit()

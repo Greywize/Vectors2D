@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using UnityEngine.Experimental.Rendering.Universal;
 using TMPro;
 
-[DisallowMultipleComponent]
 public class MultiTween : MonoBehaviour
 {
     // Nested classes
