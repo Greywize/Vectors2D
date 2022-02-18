@@ -38,6 +38,12 @@ namespace MatchMade
             current = FindFirstActive();
         }
 
+        public void SetCursor(Texture2D texture)
+        {
+            Vector2 hotSpot = new Vector2(texture.width / 2, texture.height / 2);
+            Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+        }
+
         #region Navigating
         // Returns the first active canvas found amongst all Interface Nodes 
         public InterfaceNode FindFirstActive()
@@ -59,12 +65,6 @@ namespace MatchMade
             current = newCurrent;
         }
         #endregion
-
-        public void SetCursor(Texture2D texture)
-        {
-            Vector2 hotSpot = new Vector2(texture.width / 2, texture.height / 2);
-            Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
-        }
 
         #region Application 
         public void Quit()

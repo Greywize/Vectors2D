@@ -51,7 +51,7 @@ public class MainMenu : MonoBehaviour
             return;
         }
 
-        NetworkManager.Instance.localPlayerName = nameField.text;
+        NetworkManager.localPlayerName = nameField.text;
 
         if (host)
         {

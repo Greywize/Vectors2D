@@ -13,7 +13,7 @@ public class NetworkManager : Mirror.NetworkManager
     public static NetworkManager Instance;
     private NetworkDiscovery networkDiscovery;
 
-    public string localPlayerName;
+    public static string localPlayerName;
 
     [Header("Debug")]
     public bool clientLogs = true;
@@ -46,6 +46,10 @@ public class NetworkManager : Mirror.NetworkManager
         if (serverLogs)
             Debug.Log($"<color=#33FF99>[Server]</color> Stopped.");
     }
+    public override void OnServerAddPlayer(NetworkConnection conn)
+    {
+        Server.Spawn(conn);
+    }
     // Called on the server when a client connects - Too early for Client & Target RPCs
     public override void OnServerConnect(NetworkConnection conn)
     {
@@ -57,12 +61,19 @@ public class NetworkManager : Mirror.NetworkManager
     {
         if (serverLogs)
             Debug.Log($"<color=#33FF99>[Server]</color> Client disconnected. ID: {conn.connectionId}");
+
+        NetworkServer.RemovePlayerForConnection(conn, true);
     }
     // Called on the server when a client is ready & has loaded the scene - Client & Target RPCs NOT contained on the player object will work after this is called
     public override void OnServerReady(NetworkConnection conn)
     {
         if (serverLogs)
             Debug.Log($"<color=#33FF99>[Server]</color> Ready.");
+    }
+    public override void OnServerSceneChanged(string sceneName)
+    {
+        if (serverLogs)
+            Debug.Log($"<color=#33FF99>[Server]</color> Scene changed.");
     }
     // Call on server when the transport raises an exception
     public override void OnServerError(NetworkConnection conn, Exception exception)
@@ -87,7 +98,7 @@ public class NetworkManager : Mirror.NetworkManager
     }
     // Called on the client when we connect to a server
     public override void OnClientConnect(NetworkConnection conn)
-    {
+    { 
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Connected to {networkAddress} as {mode}.");
     }
@@ -97,6 +108,11 @@ public class NetworkManager : Mirror.NetworkManager
         if (clientLogs)
             Debug.Log($"<color=#4CC4FF>[Client]</color> Disconnected.");
     }
+    public override void OnClientSceneChanged(NetworkConnection conn)
+    {
+        if (clientLogs)
+            Debug.Log($"<color=#4CC4FF>[Client]</color> Scene changed.");
+    }
     // Called on the client when transport raises an exception
     public override void OnClientError(Exception exception)
     {
@@ -105,7 +121,7 @@ public class NetworkManager : Mirror.NetworkManager
     }
     #endregion
 
-    // We shouldn't need to use these - nvm we do
+    // We shouldn't need to use these
     #region Host
     public override void OnStartHost()
     {

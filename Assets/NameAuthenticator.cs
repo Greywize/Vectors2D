@@ -4,39 +4,52 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.Experimental.Rendering.Universal;
+using Mirror;
 
 public class NameAuthenticator : MonoBehaviour
 {
     TMP_InputField nameField;
     InputAction submit;
-    [SerializeField]
-    MultiTween multiTween;
-    Light2D light2D;
 
+    [SerializeField]
+    MultiTween inputFieldTween;
+
+    [SerializeField]
+    BinaryTween menuTween;
+    [SerializeField]
+    Canvas menuCanvas;
+
+    private void OnEnable()
+    {
+        InputManager.Reset();
+        submit = InputManager.interfaceActions.FindAction("Submit");
+
+        submit.started += ctx => Authenticate();
+    }
+    private void OnDisable()
+    {
+        submit.started -= ctx => Authenticate();
+    }
     private void Start()
     {
         nameField = GetComponent<TMP_InputField>();
-        light2D = GetComponent<Light2D>();
-
-        submit = InputManager.interfaceActions.FindAction("Submit");
-        submit.performed += ctx => Authenticate();
 
         submit.Enable();
     }
     public void OnValueChanged()
     {
-        if (multiTween)
-            multiTween.BeginStage(0).onComplete.AddListener(() => { multiTween.BeginStage(1); });
+        if (inputFieldTween)
+            inputFieldTween.BeginStage(0).onComplete.AddListener(() => { inputFieldTween.BeginStage(1); });
     }
     public void SelectField()
     {
-        if (multiTween)
-            multiTween.BeginStage(2);
+        if (inputFieldTween)
+            inputFieldTween.BeginStage(2);
     }
     public void DeselectField()
     {
-        if (multiTween)
-            multiTween.BeginStage(3);
+        if (inputFieldTween)
+            inputFieldTween.BeginStage(3);
     }
     public void Authenticate()
     {
@@ -48,15 +61,41 @@ public class NameAuthenticator : MonoBehaviour
 
         string name = nameField.text;
 
+        // If the name is invalid we should indicate this to the player
         if (string.IsNullOrWhiteSpace(name))
         {
-            if (multiTween)
-                multiTween.BeginStage(4);
+            if (inputFieldTween)
+                inputFieldTween.BeginStage(4);
         }
+        // If the name is valid, begin spawn sequence
         else
         {
-            if (multiTween)
-                multiTween.BeginStage(5);
+            if (inputFieldTween)
+            {
+                inputFieldTween.BeginStage(5);
+            }
+            StartCoroutine(SpawnSequence());
+        }
+    }
+
+    IEnumerator SpawnSequence()
+    {
+        yield return new WaitForSeconds(0.5f);
+        // Set local player name
+        NetworkManager.localPlayerName = nameField.text;
+        // If connected
+        if (NetworkClient.active)
+        {
+            // If not ready, ready up
+            if (!NetworkClient.ready) NetworkClient.Ready();
+
+            // Fade menu UI
+            menuTween.TweenOut().onComplete = () => {
+                menuCanvas.enabled = false;
+
+                // Send a message to the server indicating we want to be spawned
+                NetworkClient.AddPlayer();
+            };
         }
     }
 }

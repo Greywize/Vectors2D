@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
         // The three Fs. Can we get an F in chat?!
     }
 
-    MatchMade.Player locaPlayer;
+    Player locaPlayer;
 
     Camera cam;
     Transform target;
@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        locaPlayer = GetComponent<MatchMade.Player>();
+        locaPlayer = GetComponent<Player>();
         if (!locaPlayer.isLocalPlayer)
             return;
 

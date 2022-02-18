@@ -32,7 +32,7 @@ public class BinaryTween : MonoBehaviour
         image = GetComponent<Image>();
     }
 
-    public void TweenIn()
+    public Tween TweenIn()
     {
         switch (tweenIn.mode)
         {
@@ -67,8 +67,9 @@ public class BinaryTween : MonoBehaviour
                 Debug.LogWarning($"Cannot tween a custom value with the BinaryTween component on {gameObject.name}");
                 break;
         }
+        return tweenIn;
     }
-    public void TweenOut()
+    public Tween TweenOut()
     {
         switch (tweenOut.mode)
         {
@@ -103,5 +104,7 @@ public class BinaryTween : MonoBehaviour
                 Debug.LogWarning($"Cannot tween a custom value with the BinaryTween component on {gameObject.name}");
                 break;
         }
+
+        return tweenOut;
     }
 }

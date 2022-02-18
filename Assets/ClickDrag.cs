@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class ClickDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     Rigidbody2D rigidBody2D;
-    Collider2D collider2D;
+    new Collider2D collider2D;
 
     InputAction mouseInput;
     Vector2 mousePosition;

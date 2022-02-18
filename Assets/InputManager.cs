@@ -5,14 +5,25 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    public static PlayerInput playerInput;
     public static InputActionMap interfaceActions;
     public static InputActionMap playerActions;
 
     private void Awake()
     {
-        interfaceActions = GetComponent<PlayerInput>().currentActionMap;
-        if (interfaceActions == null)
-            Debug.LogWarning($"Missiong action map on PlayerInput component on {gameObject.name}");
+        playerInput = GetComponent<PlayerInput>();
+
+        playerInput.SwitchCurrentActionMap("UI");
+        interfaceActions = playerInput.currentActionMap;
         interfaceActions.Enable();
+
+        playerInput.SwitchCurrentActionMap("Player");
+        playerActions = playerInput.currentActionMap;
+    }
+
+    public static void Reset()
+    {
+        playerInput.enabled = false;
+        playerInput.enabled = true;
     }
 }

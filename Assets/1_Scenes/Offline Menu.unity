@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
-  PersistNetworkManagerToOfflineScene: 0
+  PersistNetworkManagerToOfflineScene: 1
   runInBackground: 1
   autoStartServerBuild: 1
   serverTickRate: 30
@@ -206,11 +206,10 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 0}
+  playerPrefab: {fileID: 4665823738846275103, guid: 2e6ba7a89ff4faa4b87e3761e9362819, type: 3}
   autoCreatePlayer: 0
   playerSpawnMethod: 0
   spawnPrefabs: []
-  localPlayerName: 
   clientLogs: 1
   serverLogs: 1
 --- !u!114 &122812143
@@ -572,7 +571,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 100
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -679,7 +678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d7918ee6f2a624bada71987a43463a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorTexture: {fileID: 2800000, guid: 667fb1b8ec954614f831d7830e963df6, type: 3}
+  cursorTexture: {fileID: 2800000, guid: 2c29c0a72ba49514ebb22fa0de41bb5a, type: 3}
   cursorMode: 0
   dontDestroyOnLoad: 0
 --- !u!114 &1064606344
@@ -790,17 +789,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 2064916234097673511, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: -1967631576421560919, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 8056856818456041789, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: 3279352641294131588, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: 3837173908680883260, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 4754684134866288074, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_PointAction: {fileID: 1054132383583890850, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_MoveAction: {fileID: 3710738434707379630, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_SubmitAction: {fileID: -7736722762138910736, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_CancelAction: {fileID: -1967631576421560919, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_LeftClickAction: {fileID: 8056856818456041789, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_MiddleClickAction: {fileID: 3279352641294131588, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_RightClickAction: {fileID: 3837173908680883260, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 4754684134866288074, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: f33b738e04154eb418e2b491a536f89f, type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
 --- !u!114 &1245069398

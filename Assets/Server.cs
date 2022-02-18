@@ -1,18 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Server : MonoBehaviour
+public class Server : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static GameObject playerPrefab;
+
+    private void Start()
     {
-        
+        if (NetworkManager.singleton)
+            playerPrefab = NetworkManager.singleton.playerPrefab;
     }
 
-    // Update is called once per frame
-    void Update()
+    [Server]
+    public static void Spawn(NetworkConnection conn)
     {
-        
+        if (!NetworkManager.singleton)
+            return;
+
+        GameObject player = Instantiate(playerPrefab);
+
+        player.name = $"{playerPrefab.name} {NetworkManager.localPlayerName}";
+
+        NetworkServer.AddPlayerForConnection(conn, player);
     }
 }

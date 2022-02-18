@@ -31,13 +31,13 @@ public class Texter : MonoBehaviour
 
     private void UpdateText(TMPro.TMP_Text textObject, string message)
     {
-        LTWrapper.Tween(textObject, TextWhiteOut).onComplete += () => {
+        LTWrapper.Tween(textObject, TextWhiteOut).onComplete = () => {
             // Tween out finished, invoke delegate
             onOutComplete?.Invoke();
             // Change text
             textObject.text = message;
             // Tween back in
-            LTWrapper.Tween(textObject, TextWhiteIn).onComplete += () => {
+            LTWrapper.Tween(textObject, TextWhiteIn).onComplete = () => {
                 // Tween in finished, invoke delegate
                 onInComplete?.Invoke();
             };

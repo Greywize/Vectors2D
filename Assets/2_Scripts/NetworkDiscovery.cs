@@ -21,17 +21,6 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
     public delegate void DiscoveryEvent();
     public DiscoveryEvent onDiscoveryTimeOut;
 
-    private void OnEnable()
-    {
-        onDiscoveryTimeOut += StartHost;
-        onDiscoveryTimeOut += AdvertiseServer;
-    }
-    private void OnDisable()
-    {
-        onDiscoveryTimeOut -= StartHost;
-        onDiscoveryTimeOut -= AdvertiseServer;
-    }
-
     public override void Start()
     {
         Texter.updateText?.Invoke(loadingText, "Connecting");
@@ -78,7 +67,6 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
     IEnumerator StartTimeOutTimer(int timeOut)
     {
         yield return new WaitForSeconds(timeOut);
-
         if (!NetworkManager.Instance.isNetworkActive)
         {
             StopDiscovery();
@@ -86,11 +74,12 @@ public class NetworkDiscovery : Mirror.Discovery.NetworkDiscovery
 
             yield return new WaitForSeconds(1);
 
-            Texter.updateText?.Invoke(loadingText, "");
-            Texter.onOutComplete += () =>
+            Texter.onOutComplete = () =>
             {
-                onDiscoveryTimeOut?.Invoke();
+                StartHost();
+                AdvertiseServer();
             };
+            Texter.updateText?.Invoke(loadingText, "");
         }
     }
 
